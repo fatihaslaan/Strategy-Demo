@@ -17,11 +17,12 @@ namespace StrategyDemo.Tile_NS
             _tileCoordinate = tileCoordinate;
             transform.localPosition = new Vector3(_tileCoordinate.xCoorddinate, _tileCoordinate.yCoordinate, 0);
             _spriteRenderer.color = IsOffSet() ? offsetColor : baseColor;
+            _spriteRenderer.sprite = _tileCoordinate.tileData.Sprite;
         }
 
         private bool IsOffSet()
         {
-            return _tileCoordinate.xCoorddinate % 2 != _tileCoordinate.yCoordinate % 2;
+            return Mathf.Abs(_tileCoordinate.xCoorddinate) % 2 != Mathf.Abs(_tileCoordinate.yCoordinate) % 2;
         }
 
         private void OnValidate()

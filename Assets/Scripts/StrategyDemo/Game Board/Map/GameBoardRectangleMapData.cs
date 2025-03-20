@@ -8,6 +8,7 @@ namespace StrategyDemo.GameBoard_NS
     [CreateAssetMenu(fileName = "Game_Board_Rectangle_Map_Data", menuName = "ScriptableObjects/Game_Board_Rectangle_Map_Data")]
     public class GameBoardRectangleMapData : GameBoardBaseMapData
     {
+        [SerializeField] private TileData _tileData;
         [Min(10)][SerializeField] private int _boardWidth = 10;
         [Min(10)][SerializeField] private int _boardHeight = 10;
         public override List<TileCoordinate> GetMapTiles()
@@ -17,7 +18,8 @@ namespace StrategyDemo.GameBoard_NS
             {
                 for (int y = 0; y < _boardHeight; y++)
                 {
-                    mapTiles.Add(new TileCoordinate(x, y, TileType.Default));
+                    //To centralize tiles around 0,0 we subtracted size / 2
+                    mapTiles.Add(new TileCoordinate(x - (_boardWidth / 2), y - (_boardHeight / 2), _tileData));
                 }
             }
             return mapTiles;

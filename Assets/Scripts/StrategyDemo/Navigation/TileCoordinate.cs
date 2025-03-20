@@ -5,13 +5,13 @@ namespace StrategyDemo.Navigation_NS
     [System.Serializable]
     public class TileCoordinate:Coordinate
     {
-        public TileType tileType;
+        public TileData tileData;
 
-        public TileCoordinate(int x, int y, TileType tileType)
+        public TileCoordinate(int x, int y, TileData tileData)
         {
             xCoorddinate = x;
             yCoordinate = y;
-            this.tileType = tileType;
+            this.tileData = tileData;
         }
     }
 }
