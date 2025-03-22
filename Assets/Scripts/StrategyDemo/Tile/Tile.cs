@@ -6,23 +6,22 @@ namespace StrategyDemo.Tile_NS
 {
     public class Tile : MonoBehaviour
     {
-        [HideInInspector] public bool isOccupied;
-
         [SerializeField] private SpriteRenderer _spriteRenderer;
-
+        [SerializeField] private Color _baseTileColor = Color.white;
+        [SerializeField] private Color _offsetTileColor = Color.gray;
         private TileCoordinate _tileCoordinate;
 
-        public void SetTile(TileCoordinate tileCoordinate, Color baseColor, Color offsetColor)
+        [HideInInspector] public bool isOccupied;
+        public TileCoordinate TileCoordinate
         {
-            _tileCoordinate = tileCoordinate;
-            transform.localPosition = new Vector3(_tileCoordinate.xCoorddinate, _tileCoordinate.yCoordinate, 0);
-            _spriteRenderer.color = IsOffSet() ? offsetColor : baseColor;
-            _spriteRenderer.sprite = _tileCoordinate.tileData.Sprite;
-        }
-
-        private bool IsOffSet()
-        {
-            return Mathf.Abs(_tileCoordinate.xCoorddinate) % 2 != Mathf.Abs(_tileCoordinate.yCoordinate) % 2;
+            get { return _tileCoordinate; }
+            set
+            {
+                _tileCoordinate = value;
+                transform.localPosition = new Vector3(value.xCoordinate, value.yCoordinate, 0);
+                _spriteRenderer.color = value.IsOffset() ? _offsetTileColor : _baseTileColor;
+                _spriteRenderer.sprite = value.tileData.Sprite;
+            }
         }
 
         private void OnValidate()
