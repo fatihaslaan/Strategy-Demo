@@ -42,11 +42,18 @@ namespace Base.Addressable
                 }
             };
 
-            return asyncOperation; // mesela bura def dönerse noluo veya zaten releaselenmiş bişi relaseleme senaryosu var mı kapsamlı düşünmek lazım  completed olmazsa? valid değilse ve relslenmediyse kendi mi halledio?
+            return asyncOperation;
         }
 
         public static AsyncOperationHandle<T> LoadAddressableAssetAsync<T>(object addressableReference, Action<T> onSuccess = null, Action onFail = null) where T : class
         {
+            if (addressableReference == null)
+            {
+                Debug.LogError("Addressable reference is null! Cannot load the asset.");
+                onFail?.Invoke();
+                return default;
+            }
+
             return LoadAddressableLogic(() => Addressables.LoadAssetAsync<T>(addressableReference), $"Error loading asset: {addressableReference}", onSuccess, onFail);
         }
 

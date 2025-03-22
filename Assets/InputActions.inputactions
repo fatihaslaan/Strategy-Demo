@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ClickPosition",
+                    "name": "PointerPosition",
                     "type": "Value",
                     "id": "07ea0178-7df6-41af-8f29-8802af405d3d",
                     "expectedControlType": "Vector2",
@@ -51,7 +51,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "RightClick",
+                    "name": "MoveAndAttack",
                     "type": "Button",
                     "id": "15cd3441-09da-4011-baaa-ce282e3f6ac7",
                     "expectedControlType": "Button",
@@ -284,7 +284,7 @@
                 {
                     "name": "",
                     "id": "a8aee1f2-2086-4ecd-bbe4-6a27383ae55a",
-                    "path": "<Mouse>/press",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -299,7 +299,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ClickPosition",
+                    "action": "PointerPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -310,7 +310,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RightClick",
+                    "action": "MoveAndAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

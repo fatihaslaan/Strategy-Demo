@@ -64,7 +64,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ClickPosition"",
+                    ""name"": ""PointerPosition"",
                     ""type"": ""Value"",
                     ""id"": ""07ea0178-7df6-41af-8f29-8802af405d3d"",
                     ""expectedControlType"": ""Vector2"",
@@ -73,7 +73,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""RightClick"",
+                    ""name"": ""MoveAndAttack"",
                     ""type"": ""Button"",
                     ""id"": ""15cd3441-09da-4011-baaa-ce282e3f6ac7"",
                     ""expectedControlType"": ""Button"",
@@ -306,7 +306,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a8aee1f2-2086-4ecd-bbe4-6a27383ae55a"",
-                    ""path"": ""<Mouse>/press"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -321,7 +321,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ClickPosition"",
+                    ""action"": ""PointerPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -332,7 +332,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""RightClick"",
+                    ""action"": ""MoveAndAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -863,8 +863,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Drag = m_Player.FindAction("Drag", throwIfNotFound: true);
-        m_Player_ClickPosition = m_Player.FindAction("ClickPosition", throwIfNotFound: true);
-        m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
+        m_Player_PointerPosition = m_Player.FindAction("PointerPosition", throwIfNotFound: true);
+        m_Player_MoveAndAttack = m_Player.FindAction("MoveAndAttack", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -942,8 +942,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Drag;
-    private readonly InputAction m_Player_ClickPosition;
-    private readonly InputAction m_Player_RightClick;
+    private readonly InputAction m_Player_PointerPosition;
+    private readonly InputAction m_Player_MoveAndAttack;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -952,8 +952,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Drag => m_Wrapper.m_Player_Drag;
-        public InputAction @ClickPosition => m_Wrapper.m_Player_ClickPosition;
-        public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
+        public InputAction @PointerPosition => m_Wrapper.m_Player_PointerPosition;
+        public InputAction @MoveAndAttack => m_Wrapper.m_Player_MoveAndAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -975,12 +975,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Drag.started += instance.OnDrag;
             @Drag.performed += instance.OnDrag;
             @Drag.canceled += instance.OnDrag;
-            @ClickPosition.started += instance.OnClickPosition;
-            @ClickPosition.performed += instance.OnClickPosition;
-            @ClickPosition.canceled += instance.OnClickPosition;
-            @RightClick.started += instance.OnRightClick;
-            @RightClick.performed += instance.OnRightClick;
-            @RightClick.canceled += instance.OnRightClick;
+            @PointerPosition.started += instance.OnPointerPosition;
+            @PointerPosition.performed += instance.OnPointerPosition;
+            @PointerPosition.canceled += instance.OnPointerPosition;
+            @MoveAndAttack.started += instance.OnMoveAndAttack;
+            @MoveAndAttack.performed += instance.OnMoveAndAttack;
+            @MoveAndAttack.canceled += instance.OnMoveAndAttack;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -997,12 +997,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Drag.started -= instance.OnDrag;
             @Drag.performed -= instance.OnDrag;
             @Drag.canceled -= instance.OnDrag;
-            @ClickPosition.started -= instance.OnClickPosition;
-            @ClickPosition.performed -= instance.OnClickPosition;
-            @ClickPosition.canceled -= instance.OnClickPosition;
-            @RightClick.started -= instance.OnRightClick;
-            @RightClick.performed -= instance.OnRightClick;
-            @RightClick.canceled -= instance.OnRightClick;
+            @PointerPosition.started -= instance.OnPointerPosition;
+            @PointerPosition.performed -= instance.OnPointerPosition;
+            @PointerPosition.canceled -= instance.OnPointerPosition;
+            @MoveAndAttack.started -= instance.OnMoveAndAttack;
+            @MoveAndAttack.performed -= instance.OnMoveAndAttack;
+            @MoveAndAttack.canceled -= instance.OnMoveAndAttack;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1144,8 +1144,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnDrag(InputAction.CallbackContext context);
-        void OnClickPosition(InputAction.CallbackContext context);
-        void OnRightClick(InputAction.CallbackContext context);
+        void OnPointerPosition(InputAction.CallbackContext context);
+        void OnMoveAndAttack(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
