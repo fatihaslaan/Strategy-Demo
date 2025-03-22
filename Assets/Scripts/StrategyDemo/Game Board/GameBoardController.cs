@@ -1,5 +1,4 @@
 using Base.Util;
-using System;
 using UnityEngine;
 using StrategyDemo.Tile_NS;
 using StrategyDemo.Navigation_NS;
@@ -20,12 +19,20 @@ namespace StrategyDemo.GameBoard_NS
 
         private Dictionary<TileCoordinate, Tile> CreateTilesInGameBoardView()
         {
-            return _gameBoardView.CreateTiles(_gameBoardModel.GameBoardData);
+            GameBoardData gameBoardData = _gameBoardModel.GameBoardData;
+            Dictionary<TileCoordinate, Tile> tiles = new();
+            foreach (TileCoordinate tileCoordinate in gameBoardData.GameBoardMapData.GetTileCoordinates())
+            {
+                Tile tile = _gameBoardView.InstantiateTile(gameBoardData.TilePrefab);
+                tile.TileCoordinate = tileCoordinate;
+                tiles.Add(tileCoordinate, tile);
+            }
+            return tiles;
         }
 
         private void OnValidate()
         {
-            if(!_gameBoardModel)
+            if (!_gameBoardModel)
             {
                 ObjectFinder.FindObjectInChilderenWithType(ref _gameBoardModel, transform);
             }

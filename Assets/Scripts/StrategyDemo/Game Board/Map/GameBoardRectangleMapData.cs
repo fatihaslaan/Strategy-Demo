@@ -11,18 +11,18 @@ namespace StrategyDemo.GameBoard_NS
         [SerializeField] private TileData _tileData;
         [Min(10)][SerializeField] private int _boardWidth = 10;
         [Min(10)][SerializeField] private int _boardHeight = 10;
-        public override List<TileCoordinate> GetMapTiles()
+
+        protected override List<TileCoordinate> CreateNewMapTileCoordinates()
         {
-            List<TileCoordinate> mapTiles = new();
             for (int x = 0; x < _boardWidth; x++)
             {
                 for (int y = 0; y < _boardHeight; y++)
                 {
                     //To centralize tiles around 0,0 we subtracted size / 2
-                    mapTiles.Add(new TileCoordinate(x - (_boardWidth / 2), y - (_boardHeight / 2), _tileData));
+                    tileCoordinates.Add(new TileCoordinate(x - (_boardWidth / 2), y - (_boardHeight / 2), _tileData));
                 }
             }
-            return mapTiles;
+            return tileCoordinates;
         }
     }
 }

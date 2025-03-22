@@ -8,13 +8,9 @@ namespace StrategyDemo.GameBoard_NS
     {
         [SerializeField] private GameBoardBaseMapData _gameBoardMapData; // assetreference
         [SerializeField] private Tile _tilePrefab; //same
-        [SerializeField] private Color _baseTileColor = Color.white;
-        [SerializeField] private Color _offsetTileColor = Color.gray;
 
         public GameBoardBaseMapData GameBoardMapData { get { return _gameBoardMapData; } }
         public Tile TilePrefab { get { return _tilePrefab; } }
-        public Color BaseTileColor { get { return _baseTileColor; } }
-        public Color OffsetTileColor { get { return _offsetTileColor; } }
 
         private void OnValidate()
         {
