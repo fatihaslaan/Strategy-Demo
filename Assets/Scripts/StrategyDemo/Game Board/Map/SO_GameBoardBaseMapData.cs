@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StrategyDemo.GameBoard_NS
 {
-    public abstract class GameBoardBaseMapData : ScriptableObject
+    public abstract class SO_GameBoardBaseMapData : ScriptableObject
     {
         public List<TileCoordinate> tileCoordinates = new();
         /*

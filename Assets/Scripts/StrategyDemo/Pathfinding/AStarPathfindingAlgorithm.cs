@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace StrategyDemo.PathFinding_NS
 {
-    public class AStarPathfindingAlgorithm : IPathFindingAlgorithm<TileCoordinate>
+    public sealed class AStarPathfindingAlgorithm : IPathFindingAlgorithm<TileCoordinate>
     {
         private const int STRAIGHT_MOVE_COST = 10;
         private const int DIAGONAL_MOVE_COST = 14;

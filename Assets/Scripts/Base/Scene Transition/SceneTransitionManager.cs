@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace Base.SceneTransition
 {
-    public class SceneTransitionManager : PersistentSingleton<SceneTransitionManager>
+    public sealed class SceneTransitionManager : PersistentSingleton<SceneTransitionManager>
     {
         [SerializeField] private AssetReferenceT<SceneTransitionBehaviour> sceneTransitionPrefab; //onvalidate
 

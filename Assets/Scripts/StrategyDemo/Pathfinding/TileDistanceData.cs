@@ -2,14 +2,12 @@ namespace StrategyDemo.PathFinding_NS
 {
     public struct TileDistanceData
     {
-        public int g_WalkingDistance;
-        public int h_DestinationDistance;
         public int f_TotalDistance;
+        public int g_WalkingDistance;
 
         public TileDistanceData(int g, int h)
         {
-            g_WalkingDistance = g; 
-            h_DestinationDistance = h;
+            g_WalkingDistance = g;
             f_TotalDistance = g + h;
         }
     }

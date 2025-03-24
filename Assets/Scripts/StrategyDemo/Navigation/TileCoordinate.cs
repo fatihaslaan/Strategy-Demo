@@ -6,19 +6,19 @@ namespace StrategyDemo.Navigation_NS
     [System.Serializable]
     public class TileCoordinate : Coordinate
     {
-        public TileData tileData;
+        public SO_TileData tileData;
 
-        public TileCoordinate(int x, int y, TileData tileData) : base(x, y)
+        public TileCoordinate(int x, int y, SO_TileData tileData) : base(x, y)
         {
             this.tileData = tileData;
         }
 
-        public TileCoordinate(Coordinate coordinate, TileData tileData) : base(coordinate.yCoordinate, coordinate.yCoordinate)
+        public TileCoordinate(Coordinate coordinate, SO_TileData tileData) : base(coordinate.yCoordinate, coordinate.yCoordinate)
         {
             this.tileData = tileData;
         }
 
-        public List<TileCoordinate> GetNeighbourCoordinates(List<TileCoordinate> tiles)
+        public List<(int x_Coordinate, int y_Coordinate)> GetNeighbourCoordinates(List<(int xCoordinate, int yCoordinate)> tiles)
         {
             HashSet<(int x, int y)> neighborCoordinates = GetNeighbourCoordinates();
 

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b613518556fb3647b52b83d9e601ed6, type: 3}
-  m_Name: Default_Tile_Data
+  m_Script: {fileID: 11500000, guid: 8d232b895201c204cbdec36a3881ced0, type: 3}
+  m_Name: Entity_Data
   m_EditorClassIdentifier: 
-  _tileType: 1
-  _sprite: {fileID: 21300000, guid: 626b2019d9e62f642b67d58184635a08, type: 3}
-  _isMovable: 1
-  _isConstructable: 1
+  _name: bar
+  _icon: {fileID: 0}
+  _hp: 22
+  _entityPrefab: {fileID: 6405664660542019902, guid: f4fea005bfe31364287b3edd04574212, type: 3}
