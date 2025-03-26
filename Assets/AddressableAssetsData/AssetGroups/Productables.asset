@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Productables
+  m_EditorClassIdentifier: 
+  m_GroupName: Productables
+  m_Data:
+    m_SerializedData: []
+  m_GUID: fb28a626025421c4c93958359fb3920d
+  m_SerializeEntries:
+  - m_GUID: f39e28275ed5fb1408996e8a3d704342
+    m_Address: Barrack
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Productables
+  - m_GUID: c8bed71a99db42943b7c17b35e320c9f
+    m_Address: Power_Plant
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Productables
+  - m_GUID: 1ea1caa631932824aae9d649d063032b
+    m_Address: Production_Increase
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Productables
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 29c8480aa89442146bffefd9ba1fd1f8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a6880cc0b28495b4cb36597542fbc61d, type: 2}
+    - {fileID: 11400000, guid: 6cb826cfc88d80442ad00e041bdce471, type: 2}

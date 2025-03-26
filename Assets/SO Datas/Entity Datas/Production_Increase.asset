@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b613518556fb3647b52b83d9e601ed6, type: 3}
-  m_Name: Default_Tile_Data
+  m_Script: {fileID: 11500000, guid: 22f1ddaca3b5c6b4b8a4dbdd686df206, type: 3}
+  m_Name: Production_Increase
   m_EditorClassIdentifier: 
-  _tileType: 1
-  _sprite: {fileID: -546489164, guid: 7d34f2c9cd2cd4c4492ffa7c30344d99, type: 3}
-  _isMovable: 1
-  _isConstructable: 1
+  _name: Increase Production
+  _icon: {fileID: -2088293099, guid: 7d34f2c9cd2cd4c4492ffa7c30344d99, type: 3}

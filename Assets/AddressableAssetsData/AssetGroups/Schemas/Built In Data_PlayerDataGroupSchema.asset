@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b613518556fb3647b52b83d9e601ed6, type: 3}
-  m_Name: Default_Tile_Data
+  m_Script: {fileID: 11500000, guid: b1487f5d688e4f94f828f879d599dbdc, type: 3}
+  m_Name: Built In Data_PlayerDataGroupSchema
   m_EditorClassIdentifier: 
-  _tileType: 1
-  _sprite: {fileID: -546489164, guid: 7d34f2c9cd2cd4c4492ffa7c30344d99, type: 3}
-  _isMovable: 1
-  _isConstructable: 1
+  m_Group: {fileID: 11400000, guid: 7f266596f7557ec49a850f50f587b872, type: 2}
+  m_IncludeResourcesFolders: 1
+  m_IncludeBuildSettingsScenes: 1

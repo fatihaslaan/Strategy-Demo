@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50137d8dd79ea2489419faee1c983e2, type: 3}
+  m_Name: Power_Plant
+  m_EditorClassIdentifier: 
+  _name: Power Plant
+  _icon: {fileID: -1517586601, guid: 7d34f2c9cd2cd4c4492ffa7c30344d99, type: 3}
+  _hp: 50
+  _dimension: {x: 2, y: 3}
+  _entityPrefab: {fileID: 9097485343918068437, guid: 5b8e79f03da3c124ba17cd0b05e4c8e0, type: 3}
+  _abilities: []

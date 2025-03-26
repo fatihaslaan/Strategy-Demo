@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b613518556fb3647b52b83d9e601ed6, type: 3}
-  m_Name: Default_Tile_Data
+  m_Script: {fileID: 11500000, guid: e697d4eefaddb974d800d9af90f92d1b, type: 3}
+  m_Name: Attack_Ability
   m_EditorClassIdentifier: 
-  _tileType: 1
-  _sprite: {fileID: -546489164, guid: 7d34f2c9cd2cd4c4492ffa7c30344d99, type: 3}
-  _isMovable: 1
-  _isConstructable: 1
+  _attackRange: 1
+  _attackPower: 1

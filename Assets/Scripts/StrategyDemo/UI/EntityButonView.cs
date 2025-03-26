@@ -1,4 +1,3 @@
-using Base.Item;
 using Base.Util;
 using StrategyDemo.Entity_NS;
 using StrategyDemo.GameBoard_NS;
@@ -13,7 +12,7 @@ public class EntityButonView : MonoBehaviour
     [SerializeField] private Image _itemImageUI;
     [SerializeField] private Button _button;
 
-    private BaseEntityController a; //Test refactor
+    private SO_BaseEntityData a; //Test refactor
 
     public RectTransform rect;
 
@@ -34,14 +33,14 @@ public class EntityButonView : MonoBehaviour
 
     private void OnButtonPressed()
     {
-        GameBoardController.Instance.SetSelectedEntity(a);
+        a.Use();
     }
 
-    public void UpdateView(SO_EntityData entityData)
+    public void UpdateView(SO_BaseEntityData entityData)
     {
         if (entityData != null)
         {
-            a = entityData.EntityPrefab;
+            a = entityData;
             _itemName.text = entityData.Name;
             _itemImageUI.sprite = entityData.Icon;
         }
@@ -52,10 +51,6 @@ public class EntityButonView : MonoBehaviour
         if(!_itemName)
         {
             ObjectFinder.FindObjectInChilderenWithType(ref _itemName, transform);
-        }
-        if(!_itemImageUI)
-        {
-            ObjectFinder.FindObjectInChilderenWithType(ref _itemImageUI, transform);
         }
         if (!_button)
         {
