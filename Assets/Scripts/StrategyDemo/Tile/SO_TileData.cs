@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace StrategyDemo.Tile_NS
 {
-    [CreateAssetMenu(fileName = "Tile_Data", menuName = "ScriptableObjects/Tile_Data")]
+    [CreateAssetMenu(fileName = "Tile_Data", menuName = "ScriptableObjects/Tile/Tile_Data")]
     public class SO_TileData : ScriptableObject
     {
         [SerializeField] private TileType _tileType;

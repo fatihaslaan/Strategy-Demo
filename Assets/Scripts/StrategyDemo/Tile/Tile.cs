@@ -18,7 +18,7 @@ namespace StrategyDemo.Tile_NS
             set
             {
                 _tileCoordinate = value;
-                transform.localPosition = new Vector3(value.xCoordinate, value.yCoordinate, 0);
+                transform.position = GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(value.xCoordinate, value.yCoordinate, 0));
                 _spriteRenderer.color = value.IsOffset() ? _offsetTileColor : _baseTileColor;
                 _spriteRenderer.sprite = value.tileData.Sprite;
             }

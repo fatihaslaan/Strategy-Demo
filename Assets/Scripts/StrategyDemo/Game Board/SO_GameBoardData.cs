@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StrategyDemo.GameBoard_NS
 {
-    [CreateAssetMenu(fileName = "Game_Board_Data", menuName = "ScriptableObjects/Game_Board_Data")]
+    [CreateAssetMenu(fileName = "Game_Board_Data", menuName = "ScriptableObjects/GameBoard/Game_Board_Data")]
     public class SO_GameBoardData : ScriptableObject
     {
         [SerializeField] private SO_GameBoardBaseMapData _gameBoardMapData; // assetreference

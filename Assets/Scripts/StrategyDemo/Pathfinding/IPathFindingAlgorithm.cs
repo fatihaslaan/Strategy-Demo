@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace StrategyDemo.PathFinding_NS
 {
-    public interface IPathFindingAlgorithm<TCoordinate> where TCoordinate : Coordinate
+    public interface IPathFindingAlgorithm
     {
-        public List<TCoordinate> GetPath(TCoordinate startingCoordinate, TCoordinate destinationCoordinate);
+        public List<(int xCoordinate, int yCoordinate)> GetPath((int xCoordinate, int yCoordinate) startingCoordinate, (int xCoordinate, int yCoordinate) destinationCoordinate);
     }
 }

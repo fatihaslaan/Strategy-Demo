@@ -8,6 +8,9 @@ namespace Base.Input
         protected InputActions _inputActions;
         protected bool _isPointerDown = false;
 
+        private Vector2 _pointerDownPosition;
+        private Vector2 _moveAndAttackPointerDownPosition;
+
         protected virtual void Awake()
         {
             _inputActions = InputHandler.Instance.InputActions;
@@ -31,13 +34,16 @@ namespace Base.Input
 
         private void OnDragperformed(InputAction.CallbackContext obj)
         {
-            OnPointerDown();
+            _pointerDownPosition = GetPointerPosition();
             _isPointerDown = true;
         }
 
         private void OnDragCancelled(InputAction.CallbackContext obj)
         {
-            OnPointerUp();
+            if (Vector2.Distance(_pointerDownPosition, GetPointerPosition()) < ((Screen.width + Screen.height) / 2) / 50)
+            {
+                OnPointerClicked();
+            }
             _isPointerDown = false;
         }
 
@@ -54,13 +60,22 @@ namespace Base.Input
             return _inputActions.Player.PointerPosition.ReadValue<Vector2>();
         }
 
-        protected abstract void OnPointerUp();
-
-        protected abstract void OnPointerDown();
+        protected abstract void OnPointerClicked();
 
         protected abstract void OnPointerHeld();
 
-        protected abstract void OnMoveAndAttackPointerDown(InputAction.CallbackContext obj);
-        protected abstract void OnMoveAndAttackPointerUp(InputAction.CallbackContext obj);
+        protected abstract void OnMoveAndAttackPointerClicked();
+
+        protected void OnMoveAndAttackPointerDown(InputAction.CallbackContext obj)
+        {
+            _moveAndAttackPointerDownPosition = GetPointerPosition();
+        }
+        protected void OnMoveAndAttackPointerUp(InputAction.CallbackContext obj)
+        {
+            if (Vector2.Distance(_moveAndAttackPointerDownPosition, GetPointerPosition()) < ((Screen.width + Screen.height) / 2) / 100)
+            {
+                OnMoveAndAttackPointerClicked();
+            }
+        }
     }
 }

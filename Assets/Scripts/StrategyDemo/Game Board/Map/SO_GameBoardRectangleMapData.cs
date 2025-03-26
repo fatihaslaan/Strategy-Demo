@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace StrategyDemo.GameBoard_NS
 {
-    [CreateAssetMenu(fileName = "Game_Board_Rectangle_Map_Data", menuName = "ScriptableObjects/Game_Board_Rectangle_Map_Data")]
+    [CreateAssetMenu(fileName = "Game_Board_Rectangle_Map_Data", menuName = "ScriptableObjects/GameBoard/Game_Board_Rectangle_Map_Data")]
     public class SO_GameBoardRectangleMapData : SO_GameBoardBaseMapData
     {
         [SerializeField] private SO_TileData _tileData;
-        [Min(10)][SerializeField] private int _boardWidth = 10;
-        [Min(10)][SerializeField] private int _boardHeight = 10;
+        [Min(8)][SerializeField] private int _boardWidth = 8;
+        [Min(8)][SerializeField] private int _boardHeight = 8;
 
         protected override List<TileCoordinate> CreateNewMapTileCoordinates()
         {

@@ -1,4 +1,6 @@
 using Base.Util;
+using StrategyDemo.Entity_NS;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +12,6 @@ namespace Base.UI
         [SerializeField] private InfiniteScrollViewModel _model; //SO
         [SerializeField] private ScrollRect _scrollRect;
 
-        private float _itemHeight;
         private float _itemGap;
 
         private bool _firstItemReused;
@@ -23,27 +24,35 @@ namespace Base.UI
         private Vector2 _lastScrollPos = Vector2.one;
         private bool _scrollingTowardsLastItems = true;
 
-        private void Awake()
+        public void LoadScrollView(List<SO_BaseEntityData> itemDataList)
         {
-            _lastDataIndex = Mathf.Min(_maxScrollItemsSize - 1, _model.itemDataList.Count - 1);
+            _scrollRect.movementType = ScrollRect.MovementType.Clamped;
 
-            GridLayoutGroup gridLayout = _scrollRect.content.GetComponent<GridLayoutGroup>();
-            _itemGap = gridLayout.spacing.y;
-            _itemHeight = gridLayout.cellSize.y;
+            LayoutGroup layout = _scrollRect.content.GetComponent<LayoutGroup>();
 
-            InitializePool();
-        }
+            //Could Add Horizantal
+            if (layout is GridLayoutGroup)
+            {
+                _itemGap = (layout as GridLayoutGroup).spacing.y;
+            }
+            else if (layout is VerticalLayoutGroup)
+            {
+                _itemGap = (layout as VerticalLayoutGroup).spacing;
+            }
 
-        private void OnEnable()
-        {
+            _scrollRect.onValueChanged.RemoveAllListeners();
             if (IsPoolingNeeded())
                 _scrollRect.onValueChanged.AddListener(OnScroll);
+
+            _model.itemDataList.Clear();
+            _model.itemDataList = itemDataList;
+            _lastDataIndex = Mathf.Min(_maxScrollItemsSize - 1, _model.itemDataList.Count - 1);
+            LoadItems();
         }
 
         private void OnDestroy()
         {
-            if (IsPoolingNeeded())
-                _scrollRect.onValueChanged.RemoveListener(OnScroll);
+            _scrollRect.onValueChanged.RemoveAllListeners();
         }
 
         private bool IsPoolingNeeded()
@@ -51,12 +60,9 @@ namespace Base.UI
             return (_lastDataIndex < _model.itemDataList.Count - 1);
         }
 
-        private void InitializePool()
+        private void LoadItems()
         {
-            for (int i = 0; i <= _lastDataIndex; i++)
-            {
-                _model.InstatiateItem(_scrollRect.content.transform);
-            }
+            _model.InstatiateItems(_lastDataIndex, _scrollRect.content.transform);
         }
 
         private void OnScroll(Vector2 scrollPos)
@@ -93,7 +99,7 @@ namespace Base.UI
             _firstDataIndex++;
             _lastDataIndex++;
             RectTransform rectTransform = _model.GetFirstItemTransform(_lastDataIndex).GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, (-(_lastDataIndex / 2) * (_itemHeight + _itemGap)));
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, (-(_lastDataIndex / _model.GetItemCountInRow()) * (_model.GetItemHeight() + _itemGap)));
         }
 
         private void ReuseLastItem()
@@ -101,7 +107,7 @@ namespace Base.UI
             _firstDataIndex--;
             _lastDataIndex--;
             RectTransform rectTransform = _model.GetLastItemTransform(_firstDataIndex).GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, (-(_firstDataIndex / 2) * (_itemHeight + _itemGap)));
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, (-(_firstDataIndex / _model.GetItemCountInRow()) * (_model.GetItemHeight() + _itemGap)));
 
         }
 

@@ -69,5 +69,13 @@ namespace Base.Addressable
                 Addressables.Release(operation);
             }
         }
+
+        public static void ReleaseAssets(List<AsyncOperationHandle> operations)
+        {
+            foreach (AsyncOperationHandle operation in operations)
+            {
+                ReleaseAsset(operation);
+            }
+        }
     }
 }
