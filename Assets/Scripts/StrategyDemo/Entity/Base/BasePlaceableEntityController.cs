@@ -92,7 +92,6 @@ namespace StrategyDemo.Entity_NS
         public void Select(List<(int x, int y)> updatedMovableNeighbors)
         {
             movableNeighbors = updatedMovableNeighbors;
-            //open ui
         }
 
         public void Place(List<(int x, int y)> updatedMovableNeighbors)
@@ -132,8 +131,6 @@ namespace StrategyDemo.Entity_NS
         public void UpdatePosition(Coordinate coord)
         {
             transform.position = GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(coord.xCoordinate, coord.yCoordinate, 0));
-
-            //coordinates = coord.GetCoordinatesByDimension(_dimension);
         }
 
         private void OnValidate()

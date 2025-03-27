@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Base.UI
+namespace StrategyDemo.UI_NS
 {
     public class InfiniteScrollViewController : MonoBehaviour
     {

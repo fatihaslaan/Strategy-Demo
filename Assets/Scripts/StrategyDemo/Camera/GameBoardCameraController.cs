@@ -1,17 +1,16 @@
 using Base.Input;
 using StrategyDemo.Entity_NS;
-using StrategyDemo.Navigation_NS;
-using StrategyDemo.Tile_NS;
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 
 namespace StrategyDemo.GameBoard_NS
 {
     public sealed class GameBoardCameraController : InputController
     {
         public static event Action<(int xCoordinate, int yCoordinate)> PointerCoordinateChanged;
+        public static event Action<(int xCoordinate, int yCoordinate)> PointerClicked;
+        public static event Action<BasePlaceableEntityController> EntitySelected;
+        public static event Action<BasePlaceableEntityController, (int xCoordinate, int yCoordinate)> TargetSelected;
 
         private GameBoardController _controller;
 
@@ -30,9 +29,9 @@ namespace StrategyDemo.GameBoard_NS
             MoveCamera();
         }
 
-        protected override void OnPointerClicked()
+        protected override void OnPointerClicked() //Left Click
         {
-            _controller.Clicked(GetPointerCoordinate());
+            PointerClicked?.Invoke(GetPointerCoordinate());
 
             Vector2 mousePosition = _camera.ScreenToWorldPoint(GetPointerPosition());
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
@@ -40,13 +39,12 @@ namespace StrategyDemo.GameBoard_NS
             {
                 if (hit.collider.TryGetComponent(out BasePlaceableEntityController clickedPlaceable))
                 {
-                    _controller.ClickedToEntity(clickedPlaceable);
+                    EntitySelected?.Invoke(clickedPlaceable);
                 }
             }
-
         }
 
-        protected override void OnMoveAndAttackPointerClicked()
+        protected override void OnMoveAndAttackPointerClicked() //Right Click
         {
             Vector2 mousePosition = _camera.ScreenToWorldPoint(GetPointerPosition());
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
@@ -55,14 +53,13 @@ namespace StrategyDemo.GameBoard_NS
             {
                 controller = hit.collider.GetComponent<BasePlaceableEntityController>();
             }
-            _controller.AttackOrMoveClick(controller, GetPointerCoordinate());
+            TargetSelected?.Invoke(controller, GetPointerCoordinate());
         }
 
         protected override void Update()
         {
             if (_controller.buildPlacing)
             {
-
                 PointerCoordinateChanged?.Invoke(GetPointerCoordinate());
             }
             base.Update();
@@ -97,16 +94,13 @@ namespace StrategyDemo.GameBoard_NS
             _cameraMovementPointerPosition = GetPointerPosition();
         }
 
-        private void ClampCamera()
+        private void ClampCamera() //Clamp camera between map borders
         {
-            // Get the camera's current position
             Vector3 currentPosition = _camera.transform.position;
 
-            // Clamp the x and y coordinates within the boundaries
             float clampedX = Mathf.Clamp(currentPosition.x, GameBoardCellShape.Instance.minXPosition, GameBoardCellShape.Instance.maxXPosition);
             float clampedY = Mathf.Clamp(currentPosition.y, GameBoardCellShape.Instance.minYPosition, GameBoardCellShape.Instance.maxYPosition);
 
-            // Set the camera's position with the clamped values (retain the z-axis position)
             _camera.transform.position = new Vector3(clampedX, clampedY, currentPosition.z);
         }
     }

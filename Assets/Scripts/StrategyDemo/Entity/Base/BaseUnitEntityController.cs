@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace StrategyDemo.Entity_NS
 {
-
     public class BaseUnitEntityController : BasePlaceableEntityController
     {
         private int _moveSpeed;
@@ -23,7 +22,7 @@ namespace StrategyDemo.Entity_NS
             _moveSpeed = data.MoveSpeed;
         }
 
-        public new void ExecuteCommand(ICommand moveCommand)
+        public new void ExecuteCommand(ICommand moveCommand) //If recieved a command while completing previous terminate previous command
         {
             if (currentCommand != null)
             {

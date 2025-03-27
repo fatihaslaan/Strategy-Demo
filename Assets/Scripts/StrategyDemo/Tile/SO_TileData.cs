@@ -7,8 +7,8 @@ namespace StrategyDemo.Tile_NS
     {
         [SerializeField] private TileType _tileType;
         [SerializeField] private Sprite _sprite;
-        [SerializeField] private bool _isMovable = true;
-        [SerializeField] private bool _isConstructable = true;
+        [SerializeField] private bool _isMovable = true;  //Units Can't Move
+        [SerializeField] private bool _isConstructable = true; //Can't Construct
 
         public TileType TileType { get { return _tileType; } }
         public Sprite Sprite { get { return _sprite; } }

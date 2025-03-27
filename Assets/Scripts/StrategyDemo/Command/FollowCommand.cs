@@ -2,30 +2,29 @@ using StrategyDemo.Entity_NS;
 using StrategyDemo.PathFinding_NS;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace StrategyDemo.Command_NS
 {
     public class FollowCommand : MoveCommand
     {
-        private BaseUnitEntityController _unitToFollow;
+        private BaseUnitEntityController _target;
         private IPathFindingAlgorithm _pathFinder;
 
-        public FollowCommand(BaseUnitEntityController unit, BaseUnitEntityController unitToFollow, Action<(int x, int y), BaseUnitEntityController> onNextStep, IPathFindingAlgorithm pathfinder)
+        public FollowCommand(BaseUnitEntityController unit, BaseUnitEntityController target, Action<(int x, int y), BaseUnitEntityController> onNextStep, IPathFindingAlgorithm pathfinder)
             : base(unit, new List<(int x, int y)>(), onNextStep)
         {
-            _unitToFollow = unitToFollow;
+            _target = target;
             _pathFinder = pathfinder;
 
-            path = pathfinder.GetPath(unit.coordinates[0], unitToFollow.coordinates[0], unit.GetDimension(), true);
-            _unitToFollow.unitMoved += UpdatePath;
+            path = pathfinder.GetPath(unit.coordinates[0], target.coordinates[0], unit.GetDimension(), true); //pathfinder to chase our target
+            _target.unitMoved += UpdatePath;
         }
 
         private void UpdatePath((int x, int y) newCoordinate)
         {
-            if (!_unitToFollow || !_unitToFollow.gameObject.activeSelf)
+            if (!_target || !_target.gameObject.activeSelf) //If target available
             {
-                _unitToFollow.unitMoved -= UpdatePath;
+                _target.unitMoved -= UpdatePath;
                 Terminate();
                 return;
             }
@@ -36,11 +35,11 @@ namespace StrategyDemo.Command_NS
             }
         }
 
-        public FollowCommand AddAttackCommand(SO_AttackAbilityData data)
+        public FollowCommand AddAttackCommand(SO_AttackAbilityData data) //We can also attack to our targer
         {
             if (data != null)
             {
-                attackCommand = new AttackCommand(data, _unitToFollow, unit);
+                attackCommand = new AttackCommand(data, _target, unit);
             }
             else
             {

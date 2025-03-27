@@ -13,16 +13,11 @@ namespace StrategyDemo.GameBoard_NS
             _tiles = tiles;
         }
 
-
         public bool IsTilesAvailableToMove(List<(int xCoordinate, int yCoordinate)> coordinates)
         {
             foreach ((int xCoordinate, int yCoordinate) coordinate in coordinates)
             {
-                if (!_tiles.ContainsKey(coordinate)) return false;
-
-                if (_tiles[coordinate].isOccupied) return false;
-
-                if (!_tiles[coordinate].TileCoordinate.tileData.IsMovable) return false;
+                if (!IsTileAvailableToMove(coordinate)) return false;
             }
 
             return true;
@@ -39,16 +34,11 @@ namespace StrategyDemo.GameBoard_NS
             return true;
         }
 
-        //refactor
         public bool IsTilesAvailableToConstruct(List<(int xCoordinate, int yCoordinate)> coordinates)
         {
             foreach ((int xCoordinate, int yCoordinate) coordinate in coordinates)
             {
-                if (!_tiles.ContainsKey(coordinate)) return false;
-
-                if (_tiles[coordinate].isOccupied) return false;
-
-                if (!_tiles[coordinate].TileCoordinate.tileData.IsConstructable) return false;
+                if(!IsTileAvailableToConstruct(coordinate)) return false;
             }
 
             return true;
@@ -70,7 +60,7 @@ namespace StrategyDemo.GameBoard_NS
             return _tiles[coordinate].TileCoordinate;
         }
 
-        //also get constructable neighbors or generatable?
+        //Returns movable neighbor of any structure (or unit)
         public List<(int x, int y)> GetMovableNeighbors(List<(int x, int y)> coordinates)
         {
             List<(int x, int y)> neighbors = new();
@@ -86,6 +76,7 @@ namespace StrategyDemo.GameBoard_NS
             return neighbors;
         }
 
+        //For A* Algorithm that supports units with more than 1x1 dimension 
         public List<(int x, int y)> GetMovableNeighborsByDimension(Vector2Int dimension, (int x, int y) current)
         {
             List<(int x, int y)> neighbors = new();
@@ -102,8 +93,7 @@ namespace StrategyDemo.GameBoard_NS
             return neighbors;
         }
 
-
-
+        //Coordinates of a placeable
         public List<(int x, int y)> GetCoordinatesByDimension((int xCoordinate,int yCoordinate) coordinate, Vector2Int dimension) //Can't be minus using for creating entities
         {
             List<(int x, int y)> coordinates = new();
@@ -119,7 +109,6 @@ namespace StrategyDemo.GameBoard_NS
             return coordinates;
         }
 
-        //logic change
         public List<(int x, int y)> GetCoordinatesByAddingDimension(Vector2Int startCoord, Vector2Int dimension) //Can be used for effects of entites by specific direction
         {
             List<(int x, int y)> coordinates = new();

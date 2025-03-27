@@ -9,7 +9,7 @@ namespace StrategyDemo.GameBoard_NS
         public List<TileCoordinate> tileCoordinates = new();
         /*
         * We may have different kinds of maps in the future,
-        * We may get this maps via backend (Since TileCoordinate is Serializable we can get json data and convert it to list, although we must first getresponse and turn it to SO because this func isn't async)
+        * We may get this maps via backend (Since TileCoordinate is Serializable we can get json data and convert it to list, although we must first getresponse and turn it to SO because, Or we can get id and download it via addressables this func isn't async)
         * we can add rocky tiles, non rectangular maps
         * so we need  an abstract base map data class to get list of
         * tiles that created with different algorithms

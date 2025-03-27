@@ -1,4 +1,5 @@
 using Base.Util;
+using StrategyDemo.GameBoard_NS;
 using StrategyDemo.Navigation_NS;
 using UnityEngine;
 

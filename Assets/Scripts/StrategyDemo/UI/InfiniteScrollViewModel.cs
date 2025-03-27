@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Base.UI
+namespace StrategyDemo.UI_NS
 {
     public class InfiniteScrollViewModel : MonoBehaviour
     {
@@ -41,7 +41,7 @@ namespace Base.UI
             return _itemHeight;
         }
 
-        public int GetItemCountInRow()
+        public int GetItemCountInRow() //For generic infinite scroll view we need to know how many items are there in a row
         {
             if(_itemCountInARow == 0)
             {
@@ -61,7 +61,7 @@ namespace Base.UI
             return _itemCountInARow;
         }
 
-        public Transform GetLastItemTransform(int dataIndex)
+        public Transform GetLastItemTransform(int dataIndex) //Getting last and first items to re use
         {
             EntityButonView item = GetItem(_instantiatedItems.Last(), dataIndex);
             _instantiatedItems.Insert(0, item);

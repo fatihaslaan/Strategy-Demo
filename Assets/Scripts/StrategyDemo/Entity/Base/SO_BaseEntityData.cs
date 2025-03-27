@@ -1,6 +1,3 @@
-using StrategyDemo.GameBoard_NS;
-using StrategyDemo.PathFinding_NS;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace StrategyDemo.Entity_NS

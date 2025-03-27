@@ -5,6 +5,7 @@ using StrategyDemo.Entity_NS;
 using StrategyDemo.PathFinding_NS;
 using StrategyDemo.Navigation_NS;
 using StrategyDemo.Command_NS;
+using StrategyDemo.Factory_NS;
 
 namespace StrategyDemo.GameBoard_NS
 {
@@ -64,8 +65,6 @@ namespace StrategyDemo.GameBoard_NS
             }
             if (!unit)
                 placeableEntity.Place(_tileCalculator.GetMovableNeighbors(placeableEntity.coordinates));
-            //Set So
-            //Move view
         }
 
         public void MoveUnit(BaseUnitEntityController unit, (int xCoordinate, int yCoordinate) destination)

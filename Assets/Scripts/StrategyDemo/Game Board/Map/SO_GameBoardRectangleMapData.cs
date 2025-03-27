@@ -6,7 +6,7 @@ using UnityEngine;
 namespace StrategyDemo.GameBoard_NS
 {
     [CreateAssetMenu(fileName = "Game_Board_Rectangle_Map_Data", menuName = "ScriptableObjects/GameBoard/Game_Board_Rectangle_Map_Data")]
-    public class SO_GameBoardRectangleMapData : SO_GameBoardBaseMapData
+    public class SO_GameBoardRectangleMapData : SO_GameBoardBaseMapData //Rectangle Map Creation Data
     {
         [SerializeField] private SO_TileData _tileData;
         [Min(8)][SerializeField] private int _boardWidth = 8;

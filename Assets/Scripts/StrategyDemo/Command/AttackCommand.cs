@@ -31,11 +31,11 @@ namespace StrategyDemo.Command_NS
 
         IEnumerator Attack()
         {
-            while (_target && _target.gameObject.activeSelf && _unit && _unit.gameObject.activeSelf)
+            while (_target && _target.gameObject.activeSelf && _unit && _unit.gameObject.activeSelf) //If target is available
             {
-                if (currentRange <= _range)
+                if (currentRange <= _range) //and in range
                 {
-                    _target.RecieveDamage(_damage);
+                    _target.RecieveDamage(_damage); //attack
                 }
                 yield return new WaitForSeconds(1f / _rate);
             }

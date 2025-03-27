@@ -1,41 +1,44 @@
 using Base.Util;
-using StrategyDemo.Entity_NS;
-using StrategyDemo.GameBoard_NS;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityButonView : EntityView
+namespace StrategyDemo.UI_NS
 {
-    [SerializeField] private Button _button;
-
-    public RectTransform rect;
-
-    private void Awake()
+    public class EntityButonView : EntityView
     {
-        rect = GetComponent<RectTransform>();
-    }
+        /// <summary>
+        /// Button view for items
+        /// </summary>
+        [SerializeField] private Button _button;
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnButtonPressed);
-    }
+        [HideInInspector] public RectTransform rect;
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnButtonPressed);
-    }
-
-    private void OnButtonPressed()
-    {
-        entityData.Use();
-    }
-
-    private void OnValidate()
-    {
-        if (!_button)
+        private void Awake()
         {
-            ObjectFinder.FindObjectInChilderenWithType(ref _button, transform);
+            rect = GetComponent<RectTransform>();
+        }
+
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnButtonPressed);
+        }
+
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnButtonPressed);
+        }
+
+        private void OnButtonPressed()
+        {
+            entityData.Use();
+        }
+
+        private void OnValidate()
+        {
+            if (!_button)
+            {
+                ObjectFinder.FindObjectInChilderenWithType(ref _button, transform);
+            }
         }
     }
 }

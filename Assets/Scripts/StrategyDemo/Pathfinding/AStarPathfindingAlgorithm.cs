@@ -1,11 +1,7 @@
 using StrategyDemo.GameBoard_NS;
-using StrategyDemo.Navigation_NS;
-using StrategyDemo.Tile_NS;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace StrategyDemo.PathFinding_NS
 {
@@ -42,8 +38,7 @@ namespace StrategyDemo.PathFinding_NS
 
                 if (getClose)
                 {
-                    //Get Close Location
-
+                    //Get Closer Location (Not exact location for following moving towards to structure)
                     List<(int xCoordinate, int yCoordinate)> movableNeighbors = _tileCalculator.GetMovableNeighborsByDimension(dimension, destination);
                     if (movableNeighbors.Count > 0)
                         if (movableNeighbors.Contains(currentTile))

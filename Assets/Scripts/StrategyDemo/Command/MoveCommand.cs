@@ -1,5 +1,6 @@
 using DG.Tweening;
 using StrategyDemo.Entity_NS;
+using StrategyDemo.GameBoard_NS;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace StrategyDemo.Command_NS
         private event Action<(int x, int y), BaseUnitEntityController> _onNextStep;
 
         protected BaseUnitEntityController unit;
-        protected Stack<(int x, int y)> executedSteps = new();
+        protected Stack<(int x, int y)> executedSteps = new(); //For undo
         protected List<(int x, int y)> path;
         protected AttackCommand attackCommand;
 
@@ -51,7 +52,7 @@ namespace StrategyDemo.Command_NS
             {
                 unit.transform.DOMove(GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(nextPos.x, nextPos.y)), 1f/unit.MoveSpeed).OnComplete(() =>
                 {
-                    _onNextStep?.Invoke(nextPos, unit);
+                    _onNextStep?.Invoke(nextPos, unit); //Move to next step and check if it is available via model
                     OnMove?.Invoke();
                     executedSteps.Push(nextPos);
                     Execute();

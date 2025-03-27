@@ -1,4 +1,3 @@
-using StrategyDemo.Entity_NS;
 using StrategyDemo.Tile_NS;
 using UnityEngine;
 
@@ -7,8 +6,8 @@ namespace StrategyDemo.GameBoard_NS
     [CreateAssetMenu(fileName = "Game_Board_Data", menuName = "ScriptableObjects/GameBoard/Game_Board_Data")]
     public class SO_GameBoardData : ScriptableObject
     {
-        [SerializeField] private SO_GameBoardBaseMapData _gameBoardMapData; // assetreference
-        [SerializeField] private Tile _tilePrefab; //same
+        [SerializeField] private SO_GameBoardBaseMapData _gameBoardMapData; //Could load these with assetreference
+        [SerializeField] private Tile _tilePrefab;
 
         public SO_GameBoardBaseMapData GameBoardMapData { get { return _gameBoardMapData; } }
         public Tile TilePrefab { get { return _tilePrefab; } }

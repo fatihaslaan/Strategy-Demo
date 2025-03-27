@@ -3,20 +3,23 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityView : MonoBehaviour
+namespace StrategyDemo.UI_NS
 {
-    [SerializeField] private TextMeshProUGUI _itemName;
-    [SerializeField] private Image _itemImageUI;
-
-    protected SO_BaseEntityData entityData;
-
-    public void UpdateView(SO_BaseEntityData entityData)
+    public class EntityView : MonoBehaviour
     {
-        if (entityData != null)
+        [SerializeField] private TextMeshProUGUI _itemName;
+        [SerializeField] private Image _itemImageUI;
+
+        protected SO_BaseEntityData entityData;
+
+        public void UpdateView(SO_BaseEntityData entityData)
         {
-            this.entityData = entityData;
-            _itemName.text = entityData.Name;
-            _itemImageUI.sprite = entityData.Icon;
+            if (entityData != null)
+            {
+                this.entityData = entityData;
+                _itemName.text = entityData.Name;
+                _itemImageUI.sprite = entityData.Icon;
+            }
         }
     }
 }
