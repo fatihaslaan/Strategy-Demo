@@ -26,15 +26,16 @@ namespace StrategyDemo.PathFinding_NS
             TileDistanceData startData = new TileDistanceData(0, GameBoardCellShape.Instance.CalculateDistance(start, destination));
             tilesDistanceData[start] = startData;
 
-            SortedDictionary<int, (int xCoordinate, int yCoordinate)> tilesToCalculate = new();
-            tilesToCalculate.Add(startData.f_TotalDistance, start);
+            SortedSet<(int fCost, int x, int y)> tilesToCalculate = new();
+            tilesToCalculate.Add((startData.f_TotalDistance, start.xCoordinate,start.yCoordinate));
 
             //Keep track of visited tiles (used hashset since we only add and check if it containes that tile)
             HashSet<(int xCoordinate, int yCoordinate)> calculatedTiles = new();
             while (tilesToCalculate.Count > 0)
             {
-                (int xCoordinate, int yCoordinate) currentTile = tilesToCalculate.First().Value;
-                tilesToCalculate.Remove(tilesToCalculate.First().Key);
+                var currentTuple = tilesToCalculate.Min;
+                tilesToCalculate.Remove(currentTuple);
+                (int xCoordinate, int yCoordinate) currentTile = (currentTuple.x, currentTuple.y);
 
                 if (getClose)
                 {
@@ -61,7 +62,7 @@ namespace StrategyDemo.PathFinding_NS
                         TileDistanceData neighborData = new TileDistanceData(tempG, GameBoardCellShape.Instance.CalculateDistance(neighbor, destination));
                         tilesDistanceData[neighbor] = neighborData;
 
-                        tilesToCalculate[neighborData.f_TotalDistance] = neighbor;
+                        tilesToCalculate.Add((neighborData.f_TotalDistance, neighbor.xCoordinate, neighbor.yCoordinate));
                     }
                 }
             }
