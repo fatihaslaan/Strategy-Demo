@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Unit 3
   _icon: {fileID: -1428905142, guid: 7d34f2c9cd2cd4c4492ffa7c30344d99, type: 3}
-  _hp: 1
+  _hp: 10
   _dimension: {x: 1, y: 1}
   _entityPrefab: {fileID: 6469713874945128435, guid: 99c4f3c053aab6b49b2aca14a5a87b2f, type: 3}
-  _abilities: []
+  _abilities:
+  - {fileID: 11400000, guid: 3d2929f79d025aa4ca19007421a19e61, type: 2}
   _moveSpeed: 1

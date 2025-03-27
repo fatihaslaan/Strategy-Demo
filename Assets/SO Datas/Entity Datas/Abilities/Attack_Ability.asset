@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Attack_Ability
   m_EditorClassIdentifier: 
   _attackRange: 1
-  _attackPower: 1
+  _attackPower: 10
+  _attackRate: 1

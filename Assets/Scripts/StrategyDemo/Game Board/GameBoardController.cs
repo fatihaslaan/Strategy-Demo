@@ -5,12 +5,10 @@ using StrategyDemo.Navigation_NS;
 using System.Collections.Generic;
 using Base.Core;
 using StrategyDemo.Entity_NS;
-using System;
 using Base.UI;
 using Base.Addressable;
 using System.Linq;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using static UnityEngine.EventSystems.EventTrigger;
 
 
 namespace StrategyDemo.GameBoard_NS
@@ -18,15 +16,15 @@ namespace StrategyDemo.GameBoard_NS
     public class GameBoardController : Singleton<GameBoardController> // change
     {
         [SerializeField] private GameBoardModel _gameBoardModel;
-        [SerializeField] private GameBoardView _gameBoardView;
 
         [SerializeField] private InfiniteScrollViewController _productableScrollViewController;
         [SerializeField] private InfiniteScrollViewController _itemInfoScrollViewController;
 
+        [SerializeField] private EntityView _itemInfo;
+
         public BasePlaceableEntityController _selectedEntity;
         public BasePlaceableEntityController _chosen;
-
-
+        public BasePlaceableEntityController _spawner;
 
         [HideInInspector] public bool buildPlacing;
 
@@ -34,15 +32,19 @@ namespace StrategyDemo.GameBoard_NS
 
         public void SetSelectedEntity(SO_BasePlaceableEntityData entity)
         {
-            _selectedEntity = Instantiate(entity.EntityPrefab, new Vector3(0, 0, -1), Quaternion.identity);
-            _selectedEntity.SetEntity(entity);
-            buildPlacing = true;
+            PlaceableFactory factory = new PlaceableFactory();
+            _selectedEntity = factory.GetPlaceableEntity(entity);
+            buildPlacing = true; // prop
             //Close UIS
+        }
+
+        public void ObjectDestroyed(BasePlaceableEntityController controller)
+        {
+            _gameBoardModel.RemovePlaceable(controller);
         }
 
         private void Start()
         {
-            _gameBoardModel.SetTiles(CreateTilesInGameBoardView());
             _asyncOperations.Add(AddressableManager.LoadAddressableAssetsAsync<SO_BaseEntityData>(AddressableLabelNames.Productables, ProductableItemsLoaded));
             void ProductableItemsLoaded(IList<SO_BaseEntityData> list)
             {
@@ -57,18 +59,27 @@ namespace StrategyDemo.GameBoard_NS
 
         private void OnEnable()
         {
-            GameBoardCameraController.PointerCoordinate += UpdateByPointerPosition;
+            GameBoardCameraController.PointerCoordinateChanged += UpdateByPointerPosition;
         }
 
         private void OnDisable()
         {
-            GameBoardCameraController.PointerCoordinate -= UpdateByPointerPosition;
+            GameBoardCameraController.PointerCoordinateChanged -= UpdateByPointerPosition;
         }
 
         public void Clicked((int xCoordinate, int yCoordinate) coordinate)
         {
-            //Close ui
-            if(_selectedEntity && _selectedEntity.placeable)
+
+            if (_itemInfoScrollViewController.gameObject.activeSelf)
+            {
+                _itemInfoScrollViewController.gameObject.SetActive(false);
+            }
+            if (_chosen && _chosen.flag)
+            {
+                _chosen.flag.SetActive(false);
+            }
+
+            if (buildPlacing && _selectedEntity && _selectedEntity.placeable)
             {
                 _gameBoardModel.SetPlaceable(_selectedEntity);
                 buildPlacing = false;
@@ -78,62 +89,67 @@ namespace StrategyDemo.GameBoard_NS
 
         public void ClickedToEntity(BasePlaceableEntityController controller)
         {
-            if(controller._produceAbility)
+            _chosen = controller;
+            if (_chosen._produceAbility)
             {
-                _chosen = controller;
-                _itemInfoScrollViewController.LoadScrollView(controller._produceAbility.Producables);
+                if (!_itemInfoScrollViewController.gameObject.activeSelf)
+                {
+                    _itemInfo.UpdateView(controller._data);
+                    _itemInfoScrollViewController.gameObject.SetActive(true);
+                    _spawner = _chosen;
+                }
+                if (_chosen.flag)
+                {
+                    _chosen.flag.SetActive(true);
+                }
+                _itemInfoScrollViewController.LoadScrollView(new List<SO_BaseEntityData>(controller._produceAbility.Producables));
+            }
+        }
+
+        public void AttackOrMoveClick(BasePlaceableEntityController controller, (int xCoordinate, int yCoordinate) coordinate)
+        {
+            if (_chosen == null) return;
+            if (controller == null)
+            {
+                if (_chosen is BaseUnitEntityController)
+                {
+                    _gameBoardModel.MoveUnit(_chosen as BaseUnitEntityController, coordinate);
+                    //Move To Empty Space
+                }
+                else if (_chosen._produceAbility && _chosen._produceAbility.Flag)
+                {
+                    _chosen.flag.transform.position = GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(coordinate.xCoordinate, coordinate.yCoordinate));
+                    _chosen.defaultPosition = coordinate;
+                }
+            }
+            else
+            {
+                if (_chosen is BaseUnitEntityController)
+                {
+                    _gameBoardModel.Attack(_chosen as BaseUnitEntityController, controller);
+                    //Follow And Attack
+                }
+                else if (_chosen._attackAbility || _chosen._produceAbility && _chosen._produceAbility.Flag)
+                {
+                    _chosen.flag.transform.position = GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(coordinate.xCoordinate, coordinate.yCoordinate));
+                    _chosen.defaultPosition = coordinate;
+                    //Not Developed But Buildings Can Attack if in range
+                    //If we listen other units we can also auto attack
+                }
             }
         }
 
         public void SpawnUnit(SO_BaseUnitEntityData unit)
         {
-            _chosen.Select(_gameBoardModel.GetMovableNeighbors(_chosen.coordinates));
-            if (_chosen.movableNeighbors.Count > 0)
-            {
-                BasePlaceableEntityController unitController = Instantiate(unit.EntityPrefab, new Vector3(0, 0, -1), Quaternion.identity);
-                unitController.SetEntity(unit);
-                foreach (var item in _chosen.movableNeighbors)
-                {
-                    unitController.UpdatePosition(_gameBoardModel.GetTileCoordinate(item));
-                    if(_gameBoardModel.IsTilesAvailableToMove(unitController.coordinates))
-                    {
-                        _gameBoardModel.SetPlaceable(unitController);
-                        return;
-                    }
-                }
-                Destroy(unitController.gameObject);
-            }
-            
-
+            _gameBoardModel.SpawnUnit(unit, _spawner);
         }
 
         private void UpdateByPointerPosition((int xCoordinate, int yCoordinate) coordinate)
         {
-            if (_selectedEntity)
+            if (buildPlacing && _selectedEntity)
             {
-                if(!_gameBoardModel.IsTileAvailableToConstruct(coordinate)) return;
-                _selectedEntity.UpdatePosition(_gameBoardModel.GetTileCoordinate(coordinate));
-
-                if (!_gameBoardModel.IsTilesAvailableToConstruct(_selectedEntity.coordinates))
-                {
-                    _selectedEntity.UpdateView(false);
-                    return;
-                }
-                _selectedEntity.UpdateView(true);
+                _gameBoardModel.UpdateByPointerPosition(coordinate, _selectedEntity);
             }
-        }
-
-        private Dictionary<(int xCoordinate, int yCoordinate), Tile> CreateTilesInGameBoardView()
-        {
-            SO_GameBoardData gameBoardData = _gameBoardModel.GameBoardData;
-            Dictionary<(int xCoordinate, int yCoordinate), Tile> tiles = new();
-            foreach (TileCoordinate tileCoordinate in gameBoardData.GameBoardMapData.GetTileCoordinates())
-            {
-                Tile tile = _gameBoardView.InstantiateTile(gameBoardData.TilePrefab);
-                tile.TileCoordinate = tileCoordinate;
-                tiles.Add((tileCoordinate.xCoordinate, tileCoordinate.yCoordinate), tile);
-            }
-            return tiles;
         }
 
         private void OnValidate()
@@ -141,10 +157,6 @@ namespace StrategyDemo.GameBoard_NS
             if (!_gameBoardModel)
             {
                 ObjectFinder.FindObjectInChilderenWithType(ref _gameBoardModel, transform);
-            }
-            if (!_gameBoardView)
-            {
-                ObjectFinder.FindObjectInChilderenWithType(ref _gameBoardView, transform);
             }
         }
     }

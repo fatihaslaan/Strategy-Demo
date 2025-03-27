@@ -1,5 +1,6 @@
 using StrategyDemo.GameBoard_NS;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace StrategyDemo.Entity_NS
 {

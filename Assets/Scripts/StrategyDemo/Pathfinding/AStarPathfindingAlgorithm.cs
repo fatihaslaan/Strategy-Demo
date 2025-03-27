@@ -1,22 +1,25 @@
+using StrategyDemo.GameBoard_NS;
 using StrategyDemo.Navigation_NS;
 using StrategyDemo.Tile_NS;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace StrategyDemo.PathFinding_NS
 {
     public sealed class AStarPathfindingAlgorithm : IPathFindingAlgorithm
     {
 
-        private Dictionary<(int xCoordinate, int yCoordinate), Tile> _tiles;
+        private TileCalculator _tileCalculator;
 
-        public AStarPathfindingAlgorithm(Dictionary<(int xCoordinate, int yCoordinate), Tile> tiles)
+        public AStarPathfindingAlgorithm(TileCalculator tileCalculator)
         {
-            _tiles = tiles;
+            _tileCalculator = tileCalculator;
         }
 
-        public List<(int xCoordinate, int yCoordinate)> GetPath((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination)
+        public List<(int xCoordinate, int yCoordinate)> GetPath((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination, Vector2Int dimension, bool getClose = false)
         {
             //Dictionary to track the path that we move
             Dictionary<(int xCoordinate, int yCoordinate), (int xCoordinate, int yCoordinate)> cameFrom = new();
@@ -37,18 +40,22 @@ namespace StrategyDemo.PathFinding_NS
                 (int xCoordinate, int yCoordinate) currentTile = tilesToCalculate.First().Value;
                 tilesToCalculate.Remove(tilesToCalculate.First().Key);
 
+                if (getClose)
+                {
+                    //Get Close Location
+
+                    List<(int xCoordinate, int yCoordinate)> movableNeighbors = _tileCalculator.GetMovableNeighborsByDimension(dimension, destination);
+                    if (movableNeighbors.Count > 0)
+                        if (movableNeighbors.Contains(currentTile))
+                            return ReversePath(cameFrom, currentTile);
+                }
                 if (currentTile == destination)
                     return ReversePath(cameFrom, currentTile);
-
                 calculatedTiles.Add(currentTile);
 
-                foreach ((int xCoordinate, int yCoordinate) neighbor in _tiles[currentTile].TileCoordinate.GetNeighbourCoordinates(_tiles.Keys.ToList()))
+                foreach ((int xCoordinate, int yCoordinate) neighbor in _tileCalculator.GetMovableNeighborsByDimension(dimension, currentTile))
                 {
                     if (calculatedTiles.Contains(neighbor)) continue;
-
-                    //Check if the tile is occupied or not movable.
-                    if (_tiles[neighbor].isOccupied || !_tiles[neighbor].TileCoordinate.tileData.IsMovable)
-                        continue;
 
                     int tempG = tilesDistanceData[currentTile].g_WalkingDistance + GameBoardCellShape.Instance.CalculateDistance(currentTile, neighbor);
 
@@ -59,12 +66,11 @@ namespace StrategyDemo.PathFinding_NS
                         TileDistanceData neighborData = new TileDistanceData(tempG, GameBoardCellShape.Instance.CalculateDistance(neighbor, destination));
                         tilesDistanceData[neighbor] = neighborData;
 
-                        if (!tilesToCalculate.Values.Contains(neighbor))
-                            tilesToCalculate.Add(neighborData.f_TotalDistance, neighbor);
+                        tilesToCalculate[neighborData.f_TotalDistance] = neighbor;
                     }
                 }
             }
-
+            Debug.Log("Path Doesn't Exist");
             //Path doesn't exist
             return null;
         }
@@ -76,6 +82,7 @@ namespace StrategyDemo.PathFinding_NS
             while (cameFrom.ContainsKey(current))
             {
                 path.Add(cameFrom[current]);
+                current = cameFrom[current];
             }
 
             path.Reverse();

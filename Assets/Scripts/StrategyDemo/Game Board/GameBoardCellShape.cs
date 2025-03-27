@@ -16,11 +16,17 @@ public class GameBoardCellShape : Singleton<GameBoardCellShape>
         new Vector2Int(0,1),
         new Vector2Int(-1,0),
         new Vector2Int(1,0),
+        //Diagonel Neighbors
         new Vector2Int(1,-1),
         new Vector2Int(-1,1),
         new Vector2Int(-1,-1),
         new Vector2Int(1,1),
     };
+
+    public float minXPosition;
+    public float maxXPosition;
+    public float minYPosition;
+    public float maxYPosition;
 
     public Vector3Int GetTileCoordinateByPointerPosition(Vector2 pointerPos)
     {
@@ -29,7 +35,18 @@ public class GameBoardCellShape : Singleton<GameBoardCellShape>
 
     public Vector3 GetTilePositionByCoordinate(Vector3Int tileCoordinate)
     {
-        return _grid.CellToWorld(tileCoordinate);
+        Vector3 tilePosition = _grid.CellToWorld(tileCoordinate);
+        if (minXPosition > tilePosition.x)
+            minXPosition = tilePosition.x;
+        else if (maxXPosition < tilePosition.x) 
+            maxXPosition = tilePosition.x;
+
+        if (minYPosition > tilePosition.y)
+            minYPosition = tilePosition.y;
+        else if (maxYPosition < tilePosition.y) 
+            maxYPosition = tilePosition.y;
+
+        return tilePosition;
     }
 
     public int CalculateDistance((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination)

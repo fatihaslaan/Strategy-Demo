@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Base.Input
@@ -34,17 +35,21 @@ namespace Base.Input
 
         private void OnDragperformed(InputAction.CallbackContext obj)
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
             _pointerDownPosition = GetPointerPosition();
             _isPointerDown = true;
+            OnPointerDown();
         }
 
         private void OnDragCancelled(InputAction.CallbackContext obj)
         {
-            if (Vector2.Distance(_pointerDownPosition, GetPointerPosition()) < ((Screen.width + Screen.height) / 2) / 50)
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (Vector2.Distance(_pointerDownPosition, GetPointerPosition()) < PointerMoveThreshold())
             {
                 OnPointerClicked();
             }
             _isPointerDown = false;
+            OnPointerUp();
         }
 
         protected virtual void Update()
@@ -61,6 +66,8 @@ namespace Base.Input
         }
 
         protected abstract void OnPointerClicked();
+        protected abstract void OnPointerDown();
+        protected abstract void OnPointerUp();
 
         protected abstract void OnPointerHeld();
 
@@ -72,10 +79,16 @@ namespace Base.Input
         }
         protected void OnMoveAndAttackPointerUp(InputAction.CallbackContext obj)
         {
-            if (Vector2.Distance(_moveAndAttackPointerDownPosition, GetPointerPosition()) < ((Screen.width + Screen.height) / 2) / 100)
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (Vector2.Distance(_moveAndAttackPointerDownPosition, GetPointerPosition()) < PointerMoveThreshold())
             {
                 OnMoveAndAttackPointerClicked();
             }
+        }
+
+        private float PointerMoveThreshold()
+        {
+            return ((Screen.width + Screen.height) / 2) / 50;
         }
     }
 }

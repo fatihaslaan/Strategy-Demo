@@ -1,6 +1,5 @@
 using Base.Addressable;
 using Base.Core;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,7 +10,7 @@ namespace Base.SceneTransition
 {
     public sealed class SceneTransitionManager : PersistentSingleton<SceneTransitionManager>
     {
-        [SerializeField] private AssetReferenceT<SceneTransitionBehaviour> sceneTransitionPrefab; //onvalidate
+        [SerializeField] private AssetReferenceT<SceneTransitionBehaviour> sceneTransitionPrefab;
 
         public static List<AsyncOperationHandle> ongoingOperations = new();
         public static bool sceneChanging;
@@ -40,7 +39,6 @@ namespace Base.SceneTransition
             }
             ongoingOperations.Clear();
             SceneManager.LoadScene(sceneName.ToString());
-            //transform child yap prefabi
         }
     }
 }

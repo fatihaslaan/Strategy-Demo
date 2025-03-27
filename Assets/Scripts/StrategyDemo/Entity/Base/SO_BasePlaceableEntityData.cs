@@ -20,7 +20,8 @@ namespace StrategyDemo.Entity_NS
 
         public override void Use()
         {
-            GameBoardController.Instance.SetSelectedEntity(this);
+            if (!GameBoardController.Instance.buildPlacing)
+                GameBoardController.Instance.SetSelectedEntity(this);
         }
     }
 }
