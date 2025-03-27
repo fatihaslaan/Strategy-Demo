@@ -1,4 +1,4 @@
-using StrategyDemo.Entity_NS;
+﻿using StrategyDemo.Entity_NS;
 using System.Collections;
 using UnityEngine;
 
@@ -33,8 +33,7 @@ namespace StrategyDemo.Command_NS
         {
             while (_target && _target.gameObject.activeSelf && _unit && _unit.gameObject.activeSelf)
             {
-                Debug.Log("Current Range " + currentRange + " --- " + _range);
-                if(currentRange <= _range)
+                if (currentRange <= _range)
                 {
                     _target.RecieveDamage(_damage);
                 }
@@ -50,7 +49,6 @@ namespace StrategyDemo.Command_NS
 
         public void Terminate()
         {
-            Debug.Log("Terminated");
             _unit.StopCoroutine(Attack());
             _target = null;
         }

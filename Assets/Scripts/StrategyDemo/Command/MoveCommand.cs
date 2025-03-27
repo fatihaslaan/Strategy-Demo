@@ -34,7 +34,6 @@ namespace StrategyDemo.Command_NS
 
         private void CheckRange()
         {
-            Debug.Log("Range C: "+ path.Count);
             if (attackCommand != null && path != null)
             {
                 attackCommand.currentRange = path.Count;

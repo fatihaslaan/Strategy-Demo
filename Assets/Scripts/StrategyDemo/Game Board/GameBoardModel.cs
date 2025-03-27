@@ -55,13 +55,15 @@ namespace StrategyDemo.GameBoard_NS
                 _tiles[item].isOccupied = false;
             }
         }
-        public void SetPlaceable(BasePlaceableEntityController placeableEntity)
+        public void SetPlaceable(BasePlaceableEntityController placeableEntity, bool unit = false)
         {
+            if(!placeableEntity.gameObject.activeSelf) return;
             foreach (var item in placeableEntity.coordinates)
             {
                 _tiles[item].isOccupied = true;
             }
-            placeableEntity.Place(_tileCalculator.GetMovableNeighbors(placeableEntity.coordinates));
+            if (!unit)
+                placeableEntity.Place(_tileCalculator.GetMovableNeighbors(placeableEntity.coordinates));
             //Set So
             //Move view
         }
@@ -126,7 +128,7 @@ namespace StrategyDemo.GameBoard_NS
             movingObject.coordinates = _tileCalculator.GetCoordinatesByDimension(coordinate, movingObject.GetDimension());
             if (_tileCalculator.IsTilesAvailableToMove(movingObject.coordinates))
             {
-                SetPlaceable(movingObject);
+                SetPlaceable(movingObject, true);
                 movingObject.unitMoved?.Invoke(coordinate);
                 return;
             }

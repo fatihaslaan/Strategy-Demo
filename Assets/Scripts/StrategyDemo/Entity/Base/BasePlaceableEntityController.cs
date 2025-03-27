@@ -78,6 +78,8 @@ namespace StrategyDemo.Entity_NS
             _dimension = data.Dimension;
             transform.localScale = new Vector3(_dimension.x, _dimension.y,1);
             _data = data;
+            _attackAbility = null;
+            _produceAbility = null;
             _hp = data.Hp;
             GetComponent<BoxCollider2D>().enabled = false;
         }
