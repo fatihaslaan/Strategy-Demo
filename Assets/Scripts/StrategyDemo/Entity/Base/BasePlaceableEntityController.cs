@@ -1,14 +1,11 @@
-﻿using Base.Pooling_NS;
-using Base.Util;
+﻿using Base.Util;
 using StrategyDemo.Command_NS;
 using StrategyDemo.GameBoard_NS;
 using StrategyDemo.Navigation_NS;
 using StrategyDemo.Pooling_NS;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace StrategyDemo.Entity_NS
 {
@@ -47,7 +44,6 @@ namespace StrategyDemo.Entity_NS
                 ReturnObject();
             }
         }
-
         public void ExecuteCommand(ICommand command)
         {
             if (_currentCommand != null)
@@ -98,6 +94,7 @@ namespace StrategyDemo.Entity_NS
         {
             GetComponent<BoxCollider2D>().enabled = true;
             movableNeighbors = updatedMovableNeighbors;
+            //Set Abilities
             foreach (SO_BaseEntityAbilityData ability in _data.Abilities)
             {
                 if (ability is SO_AttackAbilityData)

@@ -27,8 +27,7 @@ namespace StrategyDemo.GameBoard_NS
 
         [HideInInspector] public bool buildPlacing;
 
-        private List<AsyncOperationHandle> _asyncOperations = new();
-
+        private List<AsyncOperationHandle> _asyncOperations = new(); //Load addressables and store them to release on destroy
 
         private void Start()
         {

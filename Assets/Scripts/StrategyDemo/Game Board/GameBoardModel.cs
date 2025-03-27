@@ -15,7 +15,7 @@ namespace StrategyDemo.GameBoard_NS
         [SerializeField] private GameBoardView _gameBoardView;
 
         /// <summary>
-        /// Didn't use 2d array
+        /// Didn't use 2d array because we could add more tiles to the edges, Like we could have buildings that adds tiles to its neighbors and in that case we would have lots of null tiles if we had used [,]
         /// </summary>
         private Dictionary<(int xCoordinate, int yCoordinate), Tile> _tiles;
 
@@ -49,6 +49,7 @@ namespace StrategyDemo.GameBoard_NS
             _pathFinder = new AStarPathfindingAlgorithm(_tileCalculator);
             _placeableFactory = new();
         }
+
         public void RemovePlaceable(BasePlaceableEntityController placeableEntity)
         {
             foreach (var item in placeableEntity.coordinates)
@@ -56,6 +57,7 @@ namespace StrategyDemo.GameBoard_NS
                 _tiles[item].isOccupied = false;
             }
         }
+
         public void SetPlaceable(BasePlaceableEntityController placeableEntity, bool unit = false)
         {
             if(!placeableEntity.gameObject.activeSelf) return;
@@ -81,26 +83,25 @@ namespace StrategyDemo.GameBoard_NS
             //Could Check For Teams
             if (target is BaseUnitEntityController)
             {
-                unit.ExecuteCommand(new FollowCommand(unit, (BaseUnitEntityController)target, UpdateMovingUnit, _pathFinder).AddAttackCommand(unit._attackAbility));
+                unit.ExecuteCommand(new FollowCommand(unit, (BaseUnitEntityController)target, UpdateMovingUnit, _pathFinder).AddAttackCommand(unit._attackAbility)); //Follow Unit
             }
             else
             {
                 List<(int xCoordinate, int yCoordinate)> path = _pathFinder.GetPath(unit.coordinates[0], target.coordinates[0], unit.GetDimension(), true);
                 if (path != null)
                 {
-                    unit.ExecuteCommand(new MoveCommand(unit, new List<(int x, int y)>(path), UpdateMovingUnit).AddAttackCommand(unit._attackAbility, target));
+                    unit.ExecuteCommand(new MoveCommand(unit, new List<(int x, int y)>(path), UpdateMovingUnit).AddAttackCommand(unit._attackAbility, target)); //Attack to structure
                 }
             }
         }
 
         public void SpawnUnit(SO_BaseUnitEntityData unit, BasePlaceableEntityController spawner)
         {
-            //refact
             spawner.movableNeighbors = _tileCalculator.GetMovableNeighbors(spawner.coordinates);
 
             if (spawner.movableNeighbors.Count > 0)
             {
-                BaseUnitEntityController unitController = _placeableFactory.GetPlaceableEntity(unit) as BaseUnitEntityController;
+                BaseUnitEntityController unitController = _placeableFactory.GetPlaceableEntity(unit) as BaseUnitEntityController; //Get  available Item
                 unitController.UpdatePosition(_tileCalculator.GetTileCoordinate(spawner.movableNeighbors[0]));
                 unitController.coordinates = _tileCalculator.GetCoordinatesByDimension(spawner.movableNeighbors[0], unitController.GetDimension());
                 SetPlaceable(unitController);
@@ -109,12 +110,13 @@ namespace StrategyDemo.GameBoard_NS
                     List<(int xCoordinate, int yCoordinate)> path = _pathFinder.GetPath(unitController.coordinates[0], (spawner.defaultPosition.Value), unitController.GetDimension(), true);
                     if (path != null)
                     {
-                        unitController.ExecuteCommand(new MoveCommand(unitController, new List<(int x, int y)>(path), UpdateMovingUnit));
+                        unitController.ExecuteCommand(new MoveCommand(unitController, new List<(int x, int y)>(path), UpdateMovingUnit)); //Move To Flag
                     }
                 }
             }
         }
 
+        //Set Tile Occupitions of moving unit
         public void UpdateMovingUnit((int xCoordinate, int yCoordinate) coordinate, BaseUnitEntityController movingObject)
         {
             if (!_tileCalculator.IsTileAvailableToMove(coordinate))
@@ -134,6 +136,7 @@ namespace StrategyDemo.GameBoard_NS
             movingObject.ReturnObject();
         }
 
+        //Show user if building is available
         public void UpdateByPointerPosition((int xCoordinate, int yCoordinate) coordinate, BasePlaceableEntityController movingObject)
         {
             if (!_tileCalculator.IsTileAvailableToConstruct(coordinate)) return;
