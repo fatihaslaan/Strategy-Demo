@@ -32,14 +32,19 @@ namespace StrategyDemo.Command_NS
         {
             while (_target && _target.gameObject.activeSelf && _unit && _unit.gameObject.activeSelf) //If target is available
             {
-                
                 if (GameBoardCellShape.Instance.CalculateTileDistance(_unit.coordinates[0], _target.coordinates[0]) <= _range) //and in range
                 {
                     _target.RecieveDamage(_damage); //attack
                 }
                 yield return new WaitForSeconds(1f / _rate);
             }
+            TargetDied();
+        }
+
+        public void TargetDied()
+        {
             Terminate();
+            _unit.TerminateCommand();
         }
 
         public void Undo()
@@ -50,7 +55,6 @@ namespace StrategyDemo.Command_NS
         public void Terminate()
         {
             _unit.StopCoroutine(Attack());
-            _unit.TerminateCommand();
             _target = null;
         }
     }
