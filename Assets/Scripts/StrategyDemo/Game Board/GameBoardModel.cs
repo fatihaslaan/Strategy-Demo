@@ -19,8 +19,6 @@ namespace StrategyDemo.GameBoard_NS
         /// </summary>
         private Dictionary<(int xCoordinate, int yCoordinate), Tile> _tiles;
 
-        public SO_GameBoardData GameBoardData { get { return _gameBoardData; } }
-
         private TileCalculator _tileCalculator;
         private AStarPathfindingAlgorithm _pathFinder;
         private PlaceableFactory _placeableFactory;
@@ -83,14 +81,14 @@ namespace StrategyDemo.GameBoard_NS
             //Could Check For Teams
             if (target is BaseUnitEntityController)
             {
-                unit.ExecuteCommand(new FollowCommand(unit, (BaseUnitEntityController)target, UpdateMovingUnit, _pathFinder).AddAttackCommand(unit._attackAbility)); //Follow Unit
+                unit.ExecuteCommand(new FollowCommand(unit, (BaseUnitEntityController)target, UpdateMovingUnit, _pathFinder).AddAttackCommand(unit.attackAbility)); //Follow Unit
             }
             else
             {
                 List<(int xCoordinate, int yCoordinate)> path = _pathFinder.GetPath(unit.coordinates[0], target.coordinates[0], unit.GetDimension(), true);
                 if (path != null)
                 {
-                    unit.ExecuteCommand(new MoveCommand(unit, new List<(int x, int y)>(path), UpdateMovingUnit).AddAttackCommand(unit._attackAbility, target)); //Attack to structure
+                    unit.ExecuteCommand(new MoveCommand(unit, new List<(int x, int y)>(path), UpdateMovingUnit).AddAttackCommand(unit.attackAbility, target)); //Attack to structure
                 }
             }
         }

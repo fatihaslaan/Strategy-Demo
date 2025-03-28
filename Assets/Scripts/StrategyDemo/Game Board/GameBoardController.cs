@@ -20,10 +20,9 @@ namespace StrategyDemo.GameBoard_NS
         [SerializeField] private InfiniteScrollViewController _itemInfoScrollViewController;
         [SerializeField] private EntityView _itemInfo;
 
-        public BasePlaceableEntityController _selectedEntity;
-
-        public BasePlaceableEntityController _currentConstruction;
-        public BasePlaceableEntityController _selectedSpawner;
+        private BasePlaceableEntityController _selectedEntity;
+        private BasePlaceableEntityController _currentConstruction;
+        private BasePlaceableEntityController _selectedSpawner;
 
         [HideInInspector] public bool buildPlacing;
 
@@ -102,11 +101,11 @@ namespace StrategyDemo.GameBoard_NS
             CheckProduceAbilityOfSelectedEntity();
             void CheckProduceAbilityOfSelectedEntity()
             {
-                if (_selectedEntity._produceAbility)
+                if (_selectedEntity.produceAbility)
                 {
                     if (!_itemInfoScrollViewController.gameObject.activeSelf)
                     {
-                        _itemInfo.UpdateView(controller._data);
+                        _itemInfo.UpdateView(controller.data);
                         _itemInfoScrollViewController.gameObject.SetActive(true);
                         _selectedSpawner = _selectedEntity;
                     }
@@ -114,7 +113,7 @@ namespace StrategyDemo.GameBoard_NS
                     {
                         _selectedEntity.flag.SetActive(true);
                     }
-                    _itemInfoScrollViewController.LoadScrollView(new List<SO_BaseEntityData>(controller._produceAbility.Producables));
+                    _itemInfoScrollViewController.LoadScrollView(new List<SO_BaseEntityData>(controller.produceAbility.Producables));
                 }
             }
         }
@@ -126,29 +125,44 @@ namespace StrategyDemo.GameBoard_NS
             {
                 if (_selectedEntity is BaseUnitEntityController)
                 {
-                    _gameBoardModel.MoveUnit(_selectedEntity as BaseUnitEntityController, coordinate);
+                    MoveUnit();
                     //Move To Empty Space
                 }
-                else if (_selectedEntity._produceAbility && _selectedEntity._produceAbility.Flag)
+                else if (_selectedEntity.produceAbility && _selectedEntity.produceAbility.Flag)
                 {
-                    _selectedEntity.flag.transform.position = GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(coordinate.xCoordinate, coordinate.yCoordinate));
-                    _selectedEntity.defaultPosition = coordinate;
+                    MoveFlag();
                 }
             }
             else
             {
                 if (_selectedEntity is BaseUnitEntityController)
                 {
-                    _gameBoardModel.Attack(_selectedEntity as BaseUnitEntityController, controller);
                     //Follow And Attack
+                    AttackToUnit();
                 }
-                else if (_selectedEntity._attackAbility || _selectedEntity._produceAbility && _selectedEntity._produceAbility.Flag)
+                else if (_selectedEntity.attackAbility || _selectedEntity.produceAbility && _selectedEntity.produceAbility.Flag)
                 {
-                    _selectedEntity.flag.transform.position = GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(coordinate.xCoordinate, coordinate.yCoordinate));
-                    _selectedEntity.defaultPosition = coordinate;
+                    MoveFlag();
                     //Not Developed But Buildings Can Attack if in range
                     //If we listen other units we can also auto attack
                 }
+            }
+
+            void MoveUnit()
+            {
+                _gameBoardModel.MoveUnit(_selectedEntity as BaseUnitEntityController, coordinate);
+
+            }
+
+            void MoveFlag()
+            {
+                _selectedEntity.flag.transform.position = GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(coordinate.xCoordinate, coordinate.yCoordinate));
+                _selectedEntity.defaultPosition = coordinate;
+            }
+
+            void AttackToUnit()
+            {
+                _gameBoardModel.Attack(_selectedEntity as BaseUnitEntityController, controller);
             }
         }
 
