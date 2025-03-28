@@ -1,4 +1,5 @@
 ﻿using StrategyDemo.Entity_NS;
+using StrategyDemo.GameBoard_NS;
 using System.Collections;
 using UnityEngine;
 
@@ -11,8 +12,6 @@ namespace StrategyDemo.Command_NS
         private int _rate;
         private BasePlaceableEntityController _target;
         private BasePlaceableEntityController _unit;
-
-        public int currentRange = int.MaxValue;
 
         public AttackCommand(SO_AttackAbilityData data, BasePlaceableEntityController target, BaseUnitEntityController unit)
         {
@@ -33,7 +32,8 @@ namespace StrategyDemo.Command_NS
         {
             while (_target && _target.gameObject.activeSelf && _unit && _unit.gameObject.activeSelf) //If target is available
             {
-                if (currentRange <= _range) //and in range
+                
+                if (GameBoardCellShape.Instance.CalculateTileDistance(_unit.coordinates[0], _target.coordinates[0]) <= _range) //and in range
                 {
                     _target.RecieveDamage(_damage); //attack
                 }
@@ -50,6 +50,7 @@ namespace StrategyDemo.Command_NS
         public void Terminate()
         {
             _unit.StopCoroutine(Attack());
+            _unit.TerminateCommand();
             _target = null;
         }
     }

@@ -20,9 +20,9 @@ namespace StrategyDemo.Entity_NS
 
         [HideInInspector] public bool placeable;
 
-        [HideInInspector] public SO_BasePlaceableEntityData _data;
-        [HideInInspector] public SO_AttackAbilityData _attackAbility;
-        [HideInInspector] public SO_ProduceAbilityData _produceAbility;
+        [HideInInspector] public SO_BasePlaceableEntityData data;
+        [HideInInspector] public SO_AttackAbilityData attackAbility;
+        [HideInInspector] public SO_ProduceAbilityData produceAbility;
 
         [HideInInspector] public List<(int x, int y)> coordinates = new();
         [HideInInspector] public List<(int x, int y)> movableNeighbors = new();
@@ -37,7 +37,7 @@ namespace StrategyDemo.Entity_NS
         public void RecieveDamage(int damage)
         {
             _hp -= damage;
-            _hpBar.localScale = new Vector3((float)_hp / _data.Hp, 1,1);
+            _hpBar.localScale = new Vector3((float)_hp / data.Hp, 1,1);
             if(_hp<=0)
             {
                 OnDestruction?.Invoke(this);
@@ -53,6 +53,14 @@ namespace StrategyDemo.Entity_NS
             }
             _currentCommand = command;
             _currentCommand.Execute();
+        }
+
+        public void TerminateCommand()
+        {
+            if(_currentCommand != null)
+            {
+                _currentCommand.Terminate();
+            }
         }
 
         public void UpdateView(bool constructable) // prop
@@ -73,9 +81,9 @@ namespace StrategyDemo.Entity_NS
             _renderer.sprite = data.Icon;
             _dimension = data.Dimension;
             transform.localScale = new Vector3(_dimension.x, _dimension.y,1);
-            _data = data;
-            _attackAbility = null;
-            _produceAbility = null;
+            this.data = data;
+            attackAbility = null;
+            produceAbility = null;
             _hp = data.Hp;
             GetComponent<BoxCollider2D>().enabled = false;
         }
@@ -95,11 +103,11 @@ namespace StrategyDemo.Entity_NS
             GetComponent<BoxCollider2D>().enabled = true;
             movableNeighbors = updatedMovableNeighbors;
             //Set Abilities
-            foreach (SO_BaseEntityAbilityData ability in _data.Abilities)
+            foreach (SO_BaseEntityAbilityData ability in data.Abilities)
             {
                 if (ability is SO_AttackAbilityData)
                 {
-                    _attackAbility = ability as SO_AttackAbilityData;
+                    attackAbility = ability as SO_AttackAbilityData;
                 }
 
                 if (ability is SO_ProduceAbilityData)
@@ -111,7 +119,7 @@ namespace StrategyDemo.Entity_NS
 
         private void SetProduceAbility(SO_ProduceAbilityData produceAbility)
         {
-            _produceAbility = produceAbility;
+            this.produceAbility = produceAbility;
             if (produceAbility.Flag && produceAbility.Producables.Exists(p => p is SO_BaseUnitEntityData))
             {
                 if (movableNeighbors.Count > 0)

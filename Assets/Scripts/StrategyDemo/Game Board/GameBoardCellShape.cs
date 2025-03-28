@@ -53,6 +53,17 @@ namespace StrategyDemo.GameBoard_NS
             return tilePosition;
         }
 
+        public int CalculateTileDistance((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination)
+        {
+            //Diagonel distance
+            int x_Difference = Mathf.Abs(start.xCoordinate - destination.xCoordinate);
+            int y_Difference = Mathf.Abs(start.yCoordinate - destination.yCoordinate);
+
+            //Horizantal/Vertical Distance
+            int remaining = Mathf.Abs(x_Difference - y_Difference);
+            return Mathf.Min(x_Difference, y_Difference) + remaining;
+        }
+
         public int CalculateDistance((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination)
         {
             //Diagonel distance

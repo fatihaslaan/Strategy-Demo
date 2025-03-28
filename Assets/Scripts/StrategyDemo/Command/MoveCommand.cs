@@ -18,12 +18,13 @@ namespace StrategyDemo.Command_NS
 
         protected Action OnMove;
 
+        private (int x, int y)? _nextPos;
+
         public MoveCommand(BaseUnitEntityController unit, List<(int x, int y)> path, Action<(int x, int y), BaseUnitEntityController> onNextStep)
         {
             this.unit = unit;
             this.path = new List<(int x, int y)>(path);
             _onNextStep = onNextStep;
-            OnMove += CheckRange;
         }
 
         public void Execute()
@@ -33,28 +34,29 @@ namespace StrategyDemo.Command_NS
             
         }
 
-        private void CheckRange()
-        {
-            if (attackCommand != null && path != null)
-            {
-                attackCommand.currentRange = path.Count;
-            }
-        }
-
         protected void MoveStep()
         {
-            if (!(path.Count > 1)) return;
+            if (!(path.Count > 1))
+            {
+                Terminate();
+                return;
+            }
 
             path.RemoveAt(0);
-            (int x, int y) nextPos = path[0];
+            if (_nextPos != null && _nextPos == path[0])
+            {
+                MoveStep();
+                return;
+            }
+            _nextPos = path[0];
 
             if(unit && unit.gameObject.activeSelf)
             {
-                unit.transform.DOMove(GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(nextPos.x, nextPos.y)), 1f/unit.MoveSpeed).OnComplete(() =>
+                unit.transform.DOMove(GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(_nextPos.Value.x, _nextPos.Value.y)), 1f/unit.MoveSpeed).OnComplete(() =>
                 {
-                    _onNextStep?.Invoke(nextPos, unit); //Move to next step and check if it is available via model
+                    _onNextStep?.Invoke(_nextPos.Value, unit); //Move to next step and check if it is available via model
                     OnMove?.Invoke();
-                    executedSteps.Push(nextPos);
+                    executedSteps.Push(_nextPos.Value);
                     Execute();
                 });
             }
@@ -87,7 +89,6 @@ namespace StrategyDemo.Command_NS
 
         public virtual void Terminate()
         {
-            unit.transform.DOKill();
             path.Clear();
 
             if (attackCommand != null)
@@ -95,7 +96,6 @@ namespace StrategyDemo.Command_NS
                 attackCommand.Terminate();
                 attackCommand = null;
             }
-            OnMove -= CheckRange;
         }
     }
 

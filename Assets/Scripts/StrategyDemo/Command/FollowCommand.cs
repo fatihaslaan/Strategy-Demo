@@ -2,6 +2,7 @@ using StrategyDemo.Entity_NS;
 using StrategyDemo.PathFinding_NS;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace StrategyDemo.Command_NS
 {
@@ -24,14 +25,19 @@ namespace StrategyDemo.Command_NS
         {
             if (!_target || !_target.gameObject.activeSelf) //If target available
             {
-                _target.unitMoved -= UpdatePath;
                 Terminate();
                 return;
             }
             path = _pathFinder.GetPath(unit.coordinates[0], newCoordinate, unit.GetDimension(), true);
-            if ((path.Count>1))
+        }
+
+        public override void Terminate()
+        {
+            base.Terminate();
+            if(_target)
             {
-                Execute();
+                _target.unitMoved -= UpdatePath;
+                _target = null;
             }
         }
 
