@@ -12,31 +12,12 @@ namespace StrategyDemo.Entity_NS
 
         public int MoveSpeed { get { return _moveSpeed; } }
 
-        public ICommand currentCommand;
-
         public Action<(int x, int y)> unitMoved;
 
         public void SetEntity(SO_BaseUnitEntityData data)
         {
             base.SetEntity(data);
             _moveSpeed = data.MoveSpeed;
-        }
-
-        public new void ExecuteCommand(ICommand moveCommand) //If recieved a command while completing previous terminate previous command
-        {
-            if (currentCommand != null)
-            {
-                currentCommand.Terminate();
-                currentCommand = null;
-            }
-            currentCommand = moveCommand;
-            currentCommand.Execute();
-        }
-
-        public void Undo()
-        {
-            currentCommand.Undo();
-            currentCommand = null;
         }
 
         public override void ReturnObject()

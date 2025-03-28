@@ -32,7 +32,7 @@ namespace StrategyDemo.Entity_NS
 
         public event Action<BasePlaceableEntityController> OnDestruction;
 
-        public ICommand _currentCommand;
+        private ICommand _currentCommand;
 
         public void RecieveDamage(int damage)
         {
@@ -44,7 +44,7 @@ namespace StrategyDemo.Entity_NS
                 ReturnObject();
             }
         }
-        public void ExecuteCommand(ICommand command)
+        public void ExecuteCommand(ICommand command) //If recieved a command while completing previous terminate previous command
         {
             if (_currentCommand != null)
             {
@@ -60,6 +60,15 @@ namespace StrategyDemo.Entity_NS
             if(_currentCommand != null)
             {
                 _currentCommand.Terminate();
+            }
+        }
+
+        public void Undo()
+        {
+            if(_currentCommand != null)
+            {
+                _currentCommand.Undo();
+                _currentCommand = null;
             }
         }
 

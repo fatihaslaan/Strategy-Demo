@@ -31,7 +31,7 @@ namespace StrategyDemo.Command_NS
         {
             if (path == null || !(path.Count > 1)) return;
             MoveStep();
-            
+
         }
 
         protected void MoveStep()
@@ -50,9 +50,9 @@ namespace StrategyDemo.Command_NS
             }
             _nextPos = path[0];
 
-            if(unit && unit.gameObject.activeSelf)
+            if (unit && unit.gameObject.activeSelf)
             {
-                unit.transform.DOMove(GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(_nextPos.Value.x, _nextPos.Value.y)), 1f/unit.MoveSpeed).OnComplete(() =>
+                unit.transform.DOMove(GameBoardCellShape.Instance.GetTilePositionByCoordinate(new Vector3Int(_nextPos.Value.x, _nextPos.Value.y)), 1f / unit.MoveSpeed).OnComplete(() =>
                 {
                     _onNextStep?.Invoke(_nextPos.Value, unit); //Move to next step and check if it is available via model
                     OnMove?.Invoke();
@@ -89,7 +89,10 @@ namespace StrategyDemo.Command_NS
 
         public virtual void Terminate()
         {
-            path.Clear();
+            if (path != null)
+            {
+                path.Clear();
+            }
 
             if (attackCommand != null)
             {
