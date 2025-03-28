@@ -17,7 +17,7 @@ namespace StrategyDemo.Command_NS
             _target = target;
             _pathFinder = pathfinder;
 
-            path = pathfinder.GetPath(unit.coordinates[0], target.coordinates[0], unit.GetDimension(), true); //pathfinder to chase our target
+            path = pathfinder.GetPath(unit.coordinates[0], target.coordinates[0], unit.GetDimension(), _target.GetDimension(), true); //pathfinder to chase our target
             if (path == null)
             {
                 Terminate();
@@ -34,7 +34,7 @@ namespace StrategyDemo.Command_NS
                 Terminate();
                 return;
             }
-            path = _pathFinder.GetPath(unit.coordinates[0], newCoordinate, unit.GetDimension(), true);
+            path = _pathFinder.GetPath(unit.coordinates[0], newCoordinate, unit.GetDimension(), _target.GetDimension(), true);
         }
 
         public override void Terminate()

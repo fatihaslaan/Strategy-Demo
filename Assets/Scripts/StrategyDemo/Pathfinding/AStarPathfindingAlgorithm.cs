@@ -15,7 +15,7 @@ namespace StrategyDemo.PathFinding_NS
             _tileCalculator = tileCalculator;
         }
 
-        public List<(int xCoordinate, int yCoordinate)> GetPath((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination, Vector2Int dimension, bool getClose = false)
+        public List<(int xCoordinate, int yCoordinate)> GetPath((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination, Vector2Int dimension, Vector2Int targetDimension = default, bool getClose = false)
         {
             //Dictionary to track the path that we move
             Dictionary<(int xCoordinate, int yCoordinate), (int xCoordinate, int yCoordinate)> cameFrom = new();
@@ -40,7 +40,8 @@ namespace StrategyDemo.PathFinding_NS
                 if (getClose)
                 {
                     //Get Closer Location (Not exact location for following moving towards to structure)
-                    List<(int xCoordinate, int yCoordinate)> movableNeighbors = _tileCalculator.GetMovableNeighborsByDimension(dimension, destination);
+                    List<(int xCoordinate, int yCoordinate)> movableNeighbors = _tileCalculator.GetMovableNeighborsByDimension(targetDimension, destination);
+
                     if (movableNeighbors.Count > 0)
                         if (movableNeighbors.Contains(currentTile))
                             return ReversePath(cameFrom, currentTile);

@@ -32,9 +32,13 @@ namespace StrategyDemo.Command_NS
         {
             while (_target && _target.gameObject.activeSelf && _unit && _unit.gameObject.activeSelf) //If target is available
             {
-                if (GameBoardCellShape.Instance.CalculateTileDistance(_unit.coordinates[0], _target.coordinates[0]) <= _range) //and in range
+                foreach ((int x, int y) coordinate in _target.coordinates)
                 {
-                    _target.RecieveDamage(_damage); //attack
+                    if (GameBoardCellShape.Instance.CalculateTileDistance(_unit.coordinates[0], coordinate) <= _range) //and in range
+                    {
+                        _target.RecieveDamage(_damage); //attack
+                        break;
+                    }
                 }
                 yield return new WaitForSeconds(1f / _rate);
             }

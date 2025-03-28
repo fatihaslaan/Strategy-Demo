@@ -85,7 +85,7 @@ namespace StrategyDemo.GameBoard_NS
             }
             else
             {
-                List<(int xCoordinate, int yCoordinate)> path = _pathFinder.GetPath(unit.coordinates[0], target.coordinates[0], unit.GetDimension(), true);
+                List<(int xCoordinate, int yCoordinate)> path = _pathFinder.GetPath(unit.coordinates[0], target.coordinates[0], unit.GetDimension(), target.GetDimension(), true);
                 if (path != null)
                 {
                     unit.ExecuteCommand(new MoveCommand(unit, new List<(int x, int y)>(path), UpdateMovingUnit).AddAttackCommand(unit.attackAbility, target)); //Attack to structure
@@ -105,7 +105,7 @@ namespace StrategyDemo.GameBoard_NS
                 SetPlaceable(unitController);
                 if (spawner.defaultPosition != null)
                 {
-                    List<(int xCoordinate, int yCoordinate)> path = _pathFinder.GetPath(unitController.coordinates[0], (spawner.defaultPosition.Value), unitController.GetDimension(), true);
+                    List<(int xCoordinate, int yCoordinate)> path = _pathFinder.GetPath(unitController.coordinates[0], (spawner.defaultPosition.Value), unitController.GetDimension(), unitController.GetDimension(), true);
                     if (path != null)
                     {
                         unitController.ExecuteCommand(new MoveCommand(unitController, new List<(int x, int y)>(path), UpdateMovingUnit)); //Move To Flag

@@ -66,9 +66,9 @@ namespace StrategyDemo.GameBoard_NS
             List<(int x, int y)> neighbors = new();
             foreach ((int x, int y) coordinate in coordinates)
             {
-                foreach (Vector2Int n in GameBoardCellShape.Instance.neighborCoordinates)
+                foreach (Vector2Int neighborCoordinate in GameBoardCellShape.Instance.neighborCoordinates)
                 {
-                    (int x, int y) temp = (coordinate.x + n.x, coordinate.y + n.y);
+                    (int x, int y) temp = (coordinate.x + neighborCoordinate.x, coordinate.y + neighborCoordinate.y);
                     if (coordinates.Contains(temp) || neighbors.Contains(temp) || !IsTileAvailableToMove(temp)) continue;
                     neighbors.Add(temp);
                 }
@@ -80,17 +80,8 @@ namespace StrategyDemo.GameBoard_NS
         public List<(int x, int y)> GetMovableNeighborsByDimension(Vector2Int dimension, (int x, int y) current)
         {
             List<(int x, int y)> neighbors = new();
-            var t = GetCoordinatesByDimension(current, dimension);
-            foreach ((int x, int y) coordinate in t)
-            {
-                foreach (Vector2Int n in GameBoardCellShape.Instance.neighborCoordinates)
-                {
-                    (int x, int y) temp = (current.x + n.x, current.y  + n.y);
-                    if (t.Contains(temp) || neighbors.Contains(temp) || !IsTileAvailableToMove(temp)) continue;
-                    neighbors.Add(temp);
-                }
-            }
-            return neighbors;
+            var coordinates = GetCoordinatesByDimension(current, dimension);
+            return GetMovableNeighbors(coordinates);
         }
 
         //Coordinates of a placeable

@@ -6,6 +6,6 @@ namespace StrategyDemo.PathFinding_NS
 {
     public interface IPathFindingAlgorithm
     {
-        public List<(int xCoordinate, int yCoordinate)> GetPath((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination, Vector2Int dimension, bool getClose = false);
+        public List<(int xCoordinate, int yCoordinate)> GetPath((int xCoordinate, int yCoordinate) start, (int xCoordinate, int yCoordinate) destination, Vector2Int dimension, Vector2Int targetDimension = default, bool getClose = false);
     }
 }
