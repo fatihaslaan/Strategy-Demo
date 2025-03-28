@@ -138,7 +138,7 @@ namespace StrategyDemo.GameBoard_NS
                 if (_selectedEntity is BaseUnitEntityController)
                 {
                     //Follow And Attack
-                    AttackToUnit();
+                    Attack();
                 }
                 else if (_selectedEntity.attackAbility || _selectedEntity.produceAbility && _selectedEntity.produceAbility.Flag)
                 {
@@ -160,7 +160,7 @@ namespace StrategyDemo.GameBoard_NS
                 _selectedEntity.defaultPosition = coordinate;
             }
 
-            void AttackToUnit()
+            void Attack()
             {
                 _gameBoardModel.Attack(_selectedEntity as BaseUnitEntityController, controller);
             }
