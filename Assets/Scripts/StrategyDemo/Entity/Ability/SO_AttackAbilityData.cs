@@ -11,7 +11,7 @@ namespace StrategyDemo.Entity_NS
 
         public int AttackRange { get { return _attackRange; } }
         public int AttackPower { get { return _attackPower; } }
-        public int AttackRate { get { return _attackPower; } }
+        public int AttackRate { get { return _attackRate; } }
 
         public override void InitAbility()
         {
